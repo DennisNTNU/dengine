@@ -1,8 +1,8 @@
-#include "texturedSphere.hpp"
+#include "mdl/texturedSphere.hpp"
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "sphereVAO.hpp"
+#include "mdl/sphereVAO.hpp"
 #include "util.hpp"
 
 TexturedSphere::TexturedSphere()

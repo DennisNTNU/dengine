@@ -58,7 +58,7 @@ void checkGLError(const char* file, int line)
     printf(" There was a gl error %i, in file %s, line %d:\n    %s\n", err, file, line, errString);
     }
 }
-
+/*
 sf::Window* setupWindow(void)
 {
     sf::ContextSettings settings;
@@ -75,24 +75,6 @@ sf::Window* setupWindow(void)
     return window;
 }
 
-void printWindowSettings(sf::Window* window)
-{
-    if (window != 0)
-    {
-    sf::ContextSettings settings2 = window->getSettings();
-
-    printf("0x%lx\n", (unsigned long)window);
-    printf("depth bits: %i\n", settings2.depthBits);
-    printf("stencilBits: %i\n", settings2.stencilBits);
-    printf("antialiasingLevel: %i\n", settings2.antialiasingLevel);
-    printf("major: %i\n", settings2.majorVersion);
-    printf("minor: %i\n", settings2.minorVersion);
-    }
-    else
-    {
-    printf("Could now print window settings. Window is null\n");
-    }
-}
 
 sf::Window* setupWindowAndGlew(void)
 {
@@ -115,6 +97,25 @@ sf::Window* setupWindowAndGlew(void)
     }
 
     return window;
+}*/
+
+void printWindowSettings(sf::Window* window)
+{
+    if (window != 0)
+    {
+        sf::ContextSettings settings2 = window->getSettings();
+
+        printf("0x%lx\n", (unsigned long)window);
+        printf("depth bits: %i\n", settings2.depthBits);
+        printf("stencilBits: %i\n", settings2.stencilBits);
+        printf("antialiasingLevel: %i\n", settings2.antialiasingLevel);
+        printf("major: %i\n", settings2.majorVersion);
+        printf("minor: %i\n", settings2.minorVersion);
+    }
+    else
+    {
+        printf("Could now print window settings. Window is null\n");
+    }
 }
 
 void printMat4(glm::mat4* mat)
@@ -124,23 +125,6 @@ void printMat4(glm::mat4* mat)
     (*mat)[0][1], (*mat)[1][1], (*mat)[2][1], (*mat)[3][1], 
     (*mat)[0][2], (*mat)[1][2], (*mat)[2][2], (*mat)[3][2], 
     (*mat)[0][3], (*mat)[1][3], (*mat)[2][3], (*mat)[3][3] );
-}
-
-void computePerspProjectionMatrix(glm::mat4* proj, float fovx, float aspectRatio, float n, float f)
-{
-    // should be identical with glm::projection, except that fovx is given instead of fovy
-
-    float r = glm::tan(fovx/2.0f);
-    float t = r / aspectRatio;
-    // float fovy = 2.0f * glm::atan(t);
-
-    float a = -(f+n)/(f-n);
-    float b = -2.0f*f*n/(f-n);
-
-    (*proj)[0][0] = 1.0f/r; (*proj)[1][0] =   0.0f; (*proj)[2][0] =  0.0f; (*proj)[3][0] = 0.0f;
-    (*proj)[0][1] =   0.0f; (*proj)[1][1] = 1.0f/t; (*proj)[2][1] =  0.0f; (*proj)[3][1] = 0.0f;
-    (*proj)[0][2] =   0.0f; (*proj)[1][2] =   0.0f; (*proj)[2][2] =     a; (*proj)[3][2] =    b;
-    (*proj)[0][3] =   0.0f; (*proj)[1][3] =   0.0f; (*proj)[2][3] = -1.0f; (*proj)[3][3] = 0.0f;
 }
 
 /*

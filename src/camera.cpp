@@ -13,7 +13,7 @@ Camera::Camera()
 	, _angVelDecay(10.0f)
 	, needsMatrixUpdate(1)
 {
-	_computeProjMatrix();
+	_computeProjMatrixGLM();
 	_view = glm::mat4(1.0f);
 	_view_glm = glm::mat4(1.0f);
 
@@ -23,12 +23,17 @@ Camera::Camera()
 	_q.x = 1.0f;
 	_w = glm::vec3(0.0f);
 
-
 	_f = glm::vec3(0.0f, 0.0f, 1.0f);
 	_u = glm::vec3(0.0f, 1.0f, 0.0f);
 	_s = glm::vec3(1.0f, 0.0f, 0.0f);
 }
 
+/*
+ * \param ar  Projection aspect ratio
+ * \param fovx  Field of view
+ * \param n  near clipping plane distance
+ * \param f  far clipping plane distance
+ */
 Camera::Camera(float ar, float fovx, float n, float f)
 	: needsMatrixUpdate(1)
 {
@@ -37,17 +42,17 @@ Camera::Camera(float ar, float fovx, float n, float f)
 	_near = n;
 	_far = f;
 
-	_computeProjMatrix();
+	_computeProjMatrixGLM();
 	_view = glm::mat4(1.0f);
 	_view_glm = glm::mat4(1.0f);
 
+	// camera state: position, velocity, quaternion, angular velocity
 	_p = glm::vec3(0.0f);
 	_v = glm::vec3(0.0f);
-	_q = glm::vec4(0.0f);
-	_q.x = 1.0f;
+	_q = glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
 	_w = glm::vec3(0.0f);
 
-
+	// camera view, up and side vectors
 	_f = glm::vec3(0.0f, 0.0f, 1.0f);
 	_u = glm::vec3(0.0f, 1.0f, 0.0f);
 	_s = glm::vec3(1.0f, 0.0f, 0.0f);
@@ -55,12 +60,12 @@ Camera::Camera(float ar, float fovx, float n, float f)
 
 Camera::~Camera()
 {
-	//_persp
+	//_proj
 }
 
 void Camera::update(double dt)
 {
-	_integrateVelocities(dt);
+	_integrate(dt);
 
 	if (needsMatrixUpdate)
 	{
@@ -75,7 +80,7 @@ void Camera::setPersp(float ar, float fovx, float n, float f)
 	_near = n;
 	_far = f;
 
-	_computeProjMatrix();
+	_computeProjMatrixGLM();
 }
 
 void Camera::setAspect(float ar)
@@ -84,8 +89,8 @@ void Camera::setAspect(float ar)
 	float r = glm::tan(_fovx/2.0f);
 	float t = r / ar;
 
-	_persp[0][0] = 1.0f/r;
-	_persp[1][1] = 1.0f/t;
+	_proj[0][0] = 1.0f/r;
+	_proj[1][1] = 1.0f/t;
 }
 
 void Camera::setPosition(float x, float y, float z)
@@ -161,7 +166,7 @@ void Camera::setOrientationQuat(float w, float x, float y, float z)
 	needsMatrixUpdate = 1;
 }
 
-void Camera::changeOrientation(float ang, glm::vec3 const & axis)
+void Camera::changeOrientationGlobal(float ang, glm::vec3 const & axis)
 {
 	glm::vec3 axis_n = normalize(axis);
 	float sa2 = glm::sin(ang/2.0f);
@@ -192,17 +197,17 @@ void Camera::changeOrientation(float ang, glm::vec3 const & axis)
 
 void Camera::pitching(float ang)
 {
-	changeOrientation(ang, _s);
+	changeOrientationGlobal(ang, _s);
 }
 
 void Camera::yawing(float ang)
 {
-	changeOrientation(ang, _u);
+	changeOrientationGlobal(ang, _u);
 }
 
 void Camera::rolling(float ang)
 {
-	changeOrientation(ang, _f);
+	changeOrientationGlobal(ang, _f);
 }
 
 
@@ -218,51 +223,7 @@ void Camera::addAngVelLocal(float wx, float wy, float wz)
 	_w += wx*_s + wy*_u + wz*_f;
 }
 
-
-
-glm::mat4 Camera::getPerspViewMatrix()
-{
-	return _persp * _view;
-}
-
-glm::mat4 Camera::getViewMatrix()
-{
-	return _view;
-}
-
-glm::mat4 Camera::getPerspMatrix()
-{
-	return _persp;
-}
-
-glm::mat4* Camera::getViewMatrix_p()
-{
-	return &_view;
-}
-
-glm::mat4* Camera::getPerspMatrix_p()
-{
-	return &_persp;
-}
-
-float* Camera::getViewMatrix_pf()
-{
-	return &(_view[0][0]);
-}
-
-float* Camera::getPerspMatrix_pf()
-{
-	return &(_persp[0][0]);
-}
-
-glm::mat4* Camera::getGLMViewMatrix_p()
-{
-	return &_view_glm;
-}
-
-
-
-void Camera::_integrateVelocities(float dt)
+void Camera::_integrate(float dt)
 {
 	float velMag = glm::sqrt(_v.x*_v.x + _v.y*_v.y + _v.z*_v.z);
 	float angVelMag = glm::sqrt(_w.x*_w.x + _w.y*_w.y + _w.z*_w.z);
@@ -293,14 +254,32 @@ void Camera::_integrateVelocities(float dt)
 	}
 }
 
-void Camera::_computeProjMatrix()
+void Camera::_computeProjMatrixGLM()
 {
 	float r = glm::tan(_fovx/2.0f);
 	float t = r / _ar;
 	float fovy = 2.0f * glm::atan(t);
 
-	_persp = glm::perspective(fovy, _ar, _near, _far);
+	_proj = glm::perspective(fovy, _ar, _near, _far);
 }
+
+void Camera::_computeProjMatrix()
+{
+    // should be identical with glm::projection, except that fovx is given instead of fovy
+
+    float r = glm::tan(_fovx/2.0f);
+    float t = r / _ar;
+    // float fovy = 2.0f * glm::atan(t);
+
+    float a = -(_far+_near)/(_far-_near);
+    float b = -2.0f*_far*_near/(_far-_near);
+
+    _proj[0][0] = 1.0f/r; _proj[1][0] =   0.0f; _proj[2][0] =  0.0f; _proj[3][0] = 0.0f;
+    _proj[0][1] =   0.0f; _proj[1][1] = 1.0f/t; _proj[2][1] =  0.0f; _proj[3][1] = 0.0f;
+    _proj[0][2] =   0.0f; _proj[1][2] =   0.0f; _proj[2][2] =     a; _proj[3][2] =    b;
+    _proj[0][3] =   0.0f; _proj[1][3] =   0.0f; _proj[2][3] = -1.0f; _proj[3][3] = 0.0f;
+}
+
 
 void Camera::_computeViewMatrix()
 {
@@ -311,9 +290,9 @@ void Camera::_computeViewMatrix()
 	// _q.x == s
 	// _q.y == a; _q.z == b; _q.w == c;
 
-	float a2 = _q.y*_q.y;
-	float b2 = _q.z*_q.z;
-	float c2 = _q.w*_q.w;
+	float aa = _q.y*_q.y;
+	float bb = _q.z*_q.z;
+	float cc = _q.w*_q.w;
 
 	float ab = _q.y*_q.z;
 	float ac = _q.y*_q.w;
@@ -323,17 +302,17 @@ void Camera::_computeViewMatrix()
 	float sb = _q.x*_q.z;
 	float sc = _q.x*_q.w;
 
-	_view[0][0] = 1.0f - 2.0f*(b2 + c2);
+	_view[0][0] = 1.0f - 2.0f*(bb + cc);
 	_view[0][1] = 2.0f*(ab - sc);
 	_view[0][2] = 2.0f*(ac + sb);
 		_view[0][3] = 0.0;
 	_view[1][0] = 2.0f*(ab + sc);
-	_view[1][1] = 1.0f - 2.0f*(a2 + c2);
+	_view[1][1] = 1.0f - 2.0f*(aa + cc);
 	_view[1][2] = 2.0f*(bc - sa);
 		_view[1][3] = 0.0;
 	_view[2][0] = 2.0f*(ac - sb);
 	_view[2][1] = 2.0f*(bc + sa);
-	_view[2][2] = 1.0f - 2.0f*(a2 + b2);
+	_view[2][2] = 1.0f - 2.0f*(aa + bb);
 		_view[2][3] = 0.0;
 	_view[3][0] = 0.0;
 	_view[3][1] = 0.0;
@@ -349,7 +328,6 @@ void Camera::_computeViewMatrix()
 	_view[3][1] = pos_homogeneous.y;
 	_view[3][2] = pos_homogeneous.z;
 
-	
 	// s points to the right, local x axis
 	// u points up, local y axis
 	// f points backward, local z axis

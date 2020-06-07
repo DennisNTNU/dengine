@@ -34,7 +34,7 @@ public:
 	// changing orinetation
 	void setOrientation(float ang, float nx, float ny, float nz);
 	void setOrientationQuat(float w, float x, float y, float z);
-	void changeOrientation(float ang, glm::vec3 const & axis);
+	void changeOrientationGlobal(float ang, glm::vec3 const & axis);
 	/*void changeOrientation(float ang, float nx, float ny, float nz);*/
 
 	void pitching(float ang);
@@ -45,29 +45,30 @@ public:
 	void addAngVelLocal(float wx, float wy, float wz);
 
 	// matrix getters
-	glm::mat4 getPerspViewMatrix();
+	glm::mat4 getPerspMatrix() { return _proj; }
+	glm::mat4* getPerspMatrix_p() { return &_proj; }
+	float* getPerspMatrix_pf() { return &(_proj[0][0]); }
 
-	glm::mat4 getPerspMatrix();
-	glm::mat4* getPerspMatrix_p();
-	float* getPerspMatrix_pf();
+	glm::mat4 getViewMatrix() { return _view; }
+	glm::mat4* getViewMatrix_p() { return &_view; }
+	float* getViewMatrix_pf() { return &(_view[0][0]); }
 
-	glm::mat4 getViewMatrix();
-	glm::mat4* getViewMatrix_p();
-	float* getViewMatrix_pf();
+	glm::mat4 getPerspViewMatrix() { return _proj * _view; }
 
+	glm::mat4* getGLMViewMatrix_p() { return &_view_glm; }
 
-	glm::mat4* getGLMViewMatrix_p();
-
+	// Camera state getters
 	glm::vec3 getPos() { return _p; }
-	glm::vec3 getQuat() { return _q; }
+	glm::vec4 getQuat() { return _q; }
 	glm::vec3 getVel() { return _v; }
 	glm::vec3 getAngVel() { return _w; }
 
 	void print();
 
 private:
-	void _integrateVelocities(float dt);
-
+	// helper functions
+	void _integrate(float dt);
+	void _computeProjMatrixGLM();
 	void _computeProjMatrix();
 	void _computeViewMatrix();
 
@@ -77,12 +78,12 @@ private:
 	float _near;
 	float _far;
 
-	// view matrix paramters
+	// view matrix paramters (camera state)
 	glm::vec3 _p; // position
 	glm::vec4 _q; // quaternion
-
 	glm::vec3 _v; // velocity
 	glm::vec3 _w; // angularVelocity
+
 
 	float _velDecay;
 	float _angVelDecay;
@@ -92,10 +93,12 @@ private:
 	glm::vec3 _s; // side dir
 
 
-	glm::mat4 _persp;
+	// view and persepctive matrices
+	glm::mat4 _proj;
 	glm::mat4 _view;
 
 	glm::mat4 _view_glm;
+
 
 	int needsMatrixUpdate;
 };

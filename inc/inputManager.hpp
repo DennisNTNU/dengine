@@ -9,42 +9,34 @@ public:
     InputManager();
     ~InputManager();
 
+    // housekeeping
+    void update();
+    void reset();
+
+    // register SFML key input events
+    void registerKeyPressSFML(unsigned char keycode);
+    void registerKeyReleaseSFML(unsigned char keycode);
+
     // get input
-    int isKeyDown(unsigned char ascii);
     int isKeyDownSFML(unsigned char keycode);
-
-    int isKeyPressedSFML(unsigned char keycode);
-
+    int wasKeyPressedSFML(unsigned char keycode);
     void getMouseMove(int* dx, int* dy);
 
-    //
-    void update();
 
-    // register input to input manager
-    void registerKeyPress(unsigned char keycode);
-    void registerKeyRelease(unsigned char keycode);
+    int isKeyDown(unsigned char ascii);
 
+    // register mouse input events
     void registerMouseJustEntered(void);
+    void registerMousePos(int x, int y);
 
-    void registerMouseBtnLeft(unsigned char pressed);
-    void registerMouseBtnRight(unsigned char pressed);
+    void setMouseCenterCoords(int x, int y);
 
-    void registerMouseMove(int x, int y);
-
-    void resetAllKeys();
-
-    int mouseX_center;
-    int mouseY_center;
+    //void registerMouseBtnLeft(unsigned char pressed);
+    //void registerMouseBtnRight(unsigned char pressed);
 
 private:
-    bool _keyDownArray[256];
-    bool _keyDownArrayPrev[256];
-
-    char _mouseLeft;
-    char _mouseRight;
-    char _mouseLeftPrev;
-    char _mouseRightPrev;
-
+    bool _keyDownArraySFML[256];
+    bool _keyDownArrayPrevSFML[256];
 
     int _mouseX;
     int _mouseY;
@@ -52,6 +44,16 @@ private:
     int _mouse_dx_move;
     int _mouse_dy_move;
 
+    int _mouseX_center;
+    int _mouseY_center;
+
+    // when implementing mouse input and uncommenting the following four
+    // variables, remember to uncoment them also in the initializer list and in
+    // the update function.
+    //char _mouseLeft;
+    //char _mouseRight;
+    //char _mouseLeftPrev;
+    //char _mouseRightPrev;
 
     bool _justEntered;
 };

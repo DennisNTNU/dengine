@@ -9,22 +9,12 @@ bool MainClass::_handleSFMLEvents()
 {
     if (_hasWindowFocus)
     {
-        // register mouse move independent from SFML events
-        sf::Vector2i mousePos = sf::Mouse::getPosition();
-        if (mousePos.x == _im.mouseX_center && mousePos.y == _im.mouseY_center)
-        {
-            // mouse did not move / mouse is at center
-        }
-        else
-        {
-            _im.registerMouseMove(mousePos.x, mousePos.y);
-        }
+        // get mouse pos relative to window
+        sf::Vector2i mousePos = sf::Mouse::getPosition(*_w);
+        // register mouse position
+        _im.registerMousePos(mousePos.x, mousePos.y);
+        // reset mouse position
         sf::Mouse::setPosition(sf::Vector2i(_width/2, _height/2), *_w);
-        // gets global position but sets local position !?
-
-        sf::Vector2i mousePosCenter = sf::Mouse::getPosition();
-        _im.mouseX_center = mousePosCenter.x;
-        _im.mouseY_center = mousePosCenter.y;
     }
 
     sf::Event e;
@@ -50,11 +40,11 @@ bool MainClass::_handleSFMLEvents()
         case sf::Event::KeyPressed:
             if (e.key.code == sf::Keyboard::Key::Escape)
                 return true;
-            _im.registerKeyPress(e.key.code);
+            _im.registerKeyPressSFML(e.key.code);
             // printf("Key Press Event: %i\n", e.key.code);
             break;
         case sf::Event::KeyReleased:
-            _im.registerKeyRelease(e.key.code);
+            _im.registerKeyReleaseSFML(e.key.code);
             // printf("Key Release Event\n");
             break;
         case sf::Event::MouseWheelScrolled:
@@ -85,7 +75,7 @@ bool MainClass::_handleSFMLEvents()
         case sf::Event::LostFocus:
             printf("Lost Window Focus Event\n");
             _hasWindowFocus = false;
-            _im.resetAllKeys();
+            _im.reset();
             _w->setMouseCursorGrabbed(false);
             _w->setMouseCursorVisible(true);
             break;
@@ -203,7 +193,7 @@ bool MainClass::_handleInput()
         //_cam.rolling(-3.141592653589793238462f/4.0f*dt);
         _cam.addAngVelLocal(0.0f, 0.0f, -0.1f);
     }
-    if (_im.isKeyPressedSFML(sf::Keyboard::Key::X))
+    if (_im.wasKeyPressedSFML(sf::Keyboard::Key::X))
         _cam.setOrientation(0.0f, 0.0f, 0.0f, 1.0f);
 
 

@@ -4,21 +4,21 @@
 #include <SFML/Window.hpp>
 
 InputManager::InputManager()
-    : mouseX_center(0)
-    , mouseY_center(0)
-    , _mouseLeft(0)
-    , _mouseRight(0)
-    , _mouseLeftPrev(0)
-    , _mouseRightPrev(0)
-    , _mouseX(0)
+    : _mouseX(0)
     , _mouseY(0)
     , _mouse_dx_move(0)
     , _mouse_dy_move(0)
+    , _mouseX_center(0)
+    , _mouseY_center(0)
+//    , _mouseLeft(0)
+//    , _mouseRight(0)
+//    , _mouseLeftPrev(0)
+//    , _mouseRightPrev(0)
     , _justEntered(1)
 {
 
-    memset(_keyDownArray, 0, 256);
-    memset(_keyDownArrayPrev, 0, 256);
+    memset(_keyDownArraySFML, 0, 256);
+    memset(_keyDownArrayPrevSFML, 0, 256);
     /*    SFML index -> ASCII code
     _SFMLtoASCIIMap[0] = 97;
     _SFMLtoASCIIMap[1] = 98;
@@ -74,28 +74,45 @@ InputManager::~InputManager()
     
 }
 
-
-int InputManager::isKeyDown(unsigned char asciiKey)
+void InputManager::update()
 {
-    if (97 <= asciiKey && 122 >= asciiKey)
+    memcpy(_keyDownArrayPrevSFML, _keyDownArraySFML, 256);
+
+//    _mouseLeftPrev = _mouseLeft;
+//    _mouseRightPrev = _mouseRight;
+}
+
+
+void InputManager::reset()
+{
+    memset(_keyDownArraySFML, 0, 256);
+    memset(_keyDownArrayPrevSFML, 0, 256);
+}
+
+void InputManager::registerKeyPressSFML(unsigned char keycode)
+{
+    if (_keyDownArraySFML[keycode] == false)
     {
-        return _keyDownArray[asciiKey - 97];
+        _keyDownArraySFML[keycode] = true;
     }
-    if (48 <= asciiKey && 57 >= asciiKey)
+}
+
+void InputManager::registerKeyReleaseSFML(unsigned char keycode)
+{
+    if (_keyDownArraySFML[keycode] == true)
     {
-        return _keyDownArray[asciiKey - 48 + 26];
+        _keyDownArraySFML[keycode] = false;
     }
-    return -1;
 }
 
 int InputManager::isKeyDownSFML(unsigned char keycode)
 {
-    return _keyDownArray[keycode]; // sfml keycode always less than 256
+    return _keyDownArraySFML[keycode]; // sfml keycode always less than 256
 }
 
-int InputManager::isKeyPressedSFML(unsigned char keycode)
+int InputManager::wasKeyPressedSFML(unsigned char keycode)
 {
-    if (_keyDownArray[keycode] && !_keyDownArrayPrev[keycode])
+    if (_keyDownArraySFML[keycode] && !_keyDownArrayPrevSFML[keycode])
     {
         return 1;
     }
@@ -113,28 +130,17 @@ void InputManager::getMouseMove(int* dx, int* dy)
     _mouse_dy_move = 0;
 }
 
-void InputManager::update()
+int InputManager::isKeyDown(unsigned char asciiKey)
 {
-    memcpy(_keyDownArrayPrev, _keyDownArray, 256);
-
-    _mouseLeftPrev = _mouseLeft;
-    _mouseRightPrev = _mouseRight;
-}
-
-void InputManager::registerKeyPress(unsigned char keycode)
-{
-    if (_keyDownArray[keycode] == false)
+    if (97 <= asciiKey && 122 >= asciiKey)
     {
-        _keyDownArray[keycode] = true;
+        return _keyDownArraySFML[asciiKey - 97];
     }
-}
-
-void InputManager::registerKeyRelease(unsigned char keycode)
-{
-    if (_keyDownArray[keycode] == true)
+    if (48 <= asciiKey && 57 >= asciiKey)
     {
-        _keyDownArray[keycode] = false;
+        return _keyDownArraySFML[asciiKey - 48 + 26];
     }
+    return -1;
 }
 
 void InputManager::registerMouseJustEntered(void)
@@ -142,7 +148,7 @@ void InputManager::registerMouseJustEntered(void)
     _justEntered = true;
 }
 
-void InputManager::registerMouseMove(int x, int y)
+void InputManager::registerMousePos(int x, int y)
 {
     if (_justEntered)
     {
@@ -153,18 +159,25 @@ void InputManager::registerMouseMove(int x, int y)
     }
     else
     {
-        _mouseX = x;
-        _mouseY = y;
+        if (x == _mouseX_center && y == _mouseY_center)
+        {
+            // mouse did not move: mouse is at center
+        }
+        else
+        {
+            _mouseX = x;
+            _mouseY = y;
 
-        _mouse_dx_move += x - mouseX_center;
-        _mouse_dy_move += y - mouseY_center;
+            _mouse_dx_move += x - _mouseX_center;
+            _mouse_dy_move += y - _mouseY_center;
+        }
 
-        //printf("Mouse Move Event: (%i, %i), prev: (%i, %i), total: (%i, %i)\n", _mouseX, _mouseY, _mouseX_prev, _mouseY_prev, _mouse_dx_move, _mouse_dy_move);
+        //printf("Mouse Move Event: (%i, %i), total: (%i, %i)\n", _mouseX, _mouseY, _mouse_dx_move, _mouse_dy_move);
     }
 }
 
-void InputManager::resetAllKeys()
+void InputManager::setMouseCenterCoords(int x, int y)
 {
-    memset(_keyDownArray, 0, 256);
-    memset(_keyDownArrayPrev, 0, 256);
+    _mouseX_center = x;
+    _mouseY_center = y;
 }

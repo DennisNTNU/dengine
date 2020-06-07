@@ -18,6 +18,5 @@ void printWindowSettings(sf::Window* window);
 sf::Window* setupWindowAndGlew(void);
 
 void printMat4(glm::mat4* mat);
-void computePerspProjectionMatrix(glm::mat4* proj, float fovx, float aspectRatio, float n, float f);
 
 #endif

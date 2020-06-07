@@ -1,4 +1,4 @@
-#include "sphereVAO.hpp"
+#include "mdl/sphereVAO.hpp"
 
 #include <math.h>
 #include <GL/glew.h>

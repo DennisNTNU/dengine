@@ -1,4 +1,4 @@
-#include "model.hpp"
+#include "mdl/model.hpp"
 
 #include <glm/gtc/matrix_transform.hpp>
 

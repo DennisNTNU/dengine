@@ -16,6 +16,8 @@ MainClass::MainClass()
 {
     gettimeofday(&tv, 0);
     gettimeofday(&tv_prev, 0);
+
+    _im.setMouseCenterCoords(_width/2, _height/2);
 }
 
 MainClass::~MainClass()

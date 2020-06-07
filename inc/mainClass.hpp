@@ -8,7 +8,7 @@
 #include "shaderManager.hpp"
 #include "inputManager.hpp"
 #include "camera.hpp"
-#include "model.hpp"
+#include "mdl/model.hpp"
 
 class MainClass
 {
