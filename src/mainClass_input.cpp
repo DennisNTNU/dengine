@@ -23,6 +23,7 @@ bool MainClass::_handleSFMLEvents()
 
         switch (e.type)
         {
+        // Window Events
         case sf::Event::Closed:
             _w->close();
             return 1;
@@ -37,6 +38,21 @@ bool MainClass::_handleSFMLEvents()
             printf("Resize Event: (%i, %i)\n", e.size.width, e.size.height);
             break;
         }
+        case sf::Event::GainedFocus:
+            printf("Gained Window Focus Event\n");
+            _hasWindowFocus = true;
+            _w->setMouseCursorGrabbed(true);
+            _w->setMouseCursorVisible(false);
+            break;
+        case sf::Event::LostFocus:
+            printf("Lost Window Focus Event\n");
+            _hasWindowFocus = false;
+            _im.reset();
+            _w->setMouseCursorGrabbed(false);
+            _w->setMouseCursorVisible(true);
+            break;
+
+        // Keyboard Events
         case sf::Event::KeyPressed:
             if (e.key.code == sf::Keyboard::Key::Escape)
                 return true;
@@ -47,6 +63,10 @@ bool MainClass::_handleSFMLEvents()
             _im.registerKeyReleaseSFML(e.key.code);
             // printf("Key Release Event\n");
             break;
+        case sf::Event::TextEntered:
+            break;
+
+        // Mouse Events
         case sf::Event::MouseWheelScrolled:
             printf("Mouse Scroll Event\n");
             break;
@@ -66,25 +86,10 @@ bool MainClass::_handleSFMLEvents()
         case sf::Event::MouseLeft:
             printf("Mouse Left Window Event\n");
             break;
-        case sf::Event::GainedFocus:
-            printf("Gained Window Focus Event\n");
-            _hasWindowFocus = true;
-            _w->setMouseCursorGrabbed(true);
-            _w->setMouseCursorVisible(false);
-            break;
-        case sf::Event::LostFocus:
-            printf("Lost Window Focus Event\n");
-            _hasWindowFocus = false;
-            _im.reset();
-            _w->setMouseCursorGrabbed(false);
-            _w->setMouseCursorVisible(true);
-            break;
-
-
-        case sf::Event::TextEntered:
-            break;
         case sf::Event::MouseWheelMoved:
             break;
+
+        // Joystick events
         case sf::Event::JoystickButtonPressed:
             break;
         case sf::Event::JoystickButtonReleased:
@@ -95,12 +100,16 @@ bool MainClass::_handleSFMLEvents()
             break;
         case sf::Event::JoystickDisconnected:
             break;
+
+        // Touchsceen Events
         case sf::Event::TouchBegan:
             break;
         case sf::Event::TouchMoved:
             break;
         case sf::Event::TouchEnded:
             break;
+
+        // I dont know what these events are
         case sf::Event::SensorChanged:
             break;
         case sf::Event::Count:

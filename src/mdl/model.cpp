@@ -263,6 +263,8 @@ void Model::_initTexture(unsigned char* imageData, int width, int height)
         glGenTextures(1, &_texID);
     checkGLError(__FILE__, __LINE__);
 
+    printf("Texture ID: %i\n", _texID);
+
     //glActiveTexture(GL_TEXTURE0);
     //checkGLError(__FILE__, __LINE__);
 

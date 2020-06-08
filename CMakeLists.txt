@@ -16,6 +16,12 @@ add_library(dengine
     src/mdl/model.cpp
     src/mdl/sphereVAO.cpp
     src/mdl/texturedSphere.cpp
+    src/mdl/mdl_base.cpp
+    src/mdl/mdl_pos.cpp
+    src/mdl/mdl_ind_pos_tex.cpp
+    src/mdl/mdl_example0.cpp
+    src/mdl/mdl_example1.cpp
+    src/mdl/mdl_example2.cpp
     src/shaderManager.cpp
     src/util.cpp
     )

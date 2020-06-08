@@ -54,6 +54,7 @@ void MainClass::_draw()
     _glClear(); checkGLError(__FILE__, __LINE__);
 
     _mdl.draw(_cam.getViewMatrix_pf(), _cam.getPerspMatrix_pf());
+    _mdl_->draw(_cam.getViewMatrix_pf(), _cam.getPerspMatrix_pf());
 
     _w->display();
 }
@@ -61,7 +62,7 @@ void MainClass::_draw()
 
 void MainClass::_glClear()
 {
-    glClearColor(0.1f, 0.2f, 0.4f, 1.0f);
+    glClearColor(0.2f, 0.4f, 0.8f, 1.0f);
 
     //glColorMask (GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
     //glDepthMask (GL_TRUE);

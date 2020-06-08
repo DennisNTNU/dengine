@@ -77,14 +77,13 @@ void ShaderManager::makeProgram(const char* vertexShaderPath, const char* fragme
     GLuint fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
     checkGLError(__FILE__, __LINE__);
 
-
-
     glShaderSource(vertexShaderID, 1, &vertexShader, nullptr);
     checkGLError(__FILE__, __LINE__);
     glShaderSource(fragmentShaderID, 1, &fragmentShader, nullptr);
     checkGLError(__FILE__, __LINE__);
 
-
+    delete[] vertexShader;
+    delete[] fragmentShader;
     
     GLint success = 0;
     glCompileShader(vertexShaderID);

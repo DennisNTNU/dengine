@@ -9,6 +9,8 @@
 #include "inputManager.hpp"
 #include "camera.hpp"
 #include "mdl/model.hpp"
+#include "mdl/mdl_example0.hpp"
+#include "mdl/mdl_example2.hpp"
 
 class MainClass
 {
@@ -44,6 +46,8 @@ private:
     Camera _cam;
 
     Model _mdl;
+
+    Mdl_example0* _mdl_;
 
     struct timeval tv;
     struct timeval tv_prev;

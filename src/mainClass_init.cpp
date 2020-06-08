@@ -11,6 +11,7 @@ MainClass::MainClass()
     , _hasWindowFocus(true)
     , _width(1280)
     , _height(720)
+    , _mdl_(nullptr)
     , dt(0.1)
     , targetFrameTime(0.016666) // 60fps -> 16.66ms
 {
@@ -26,6 +27,10 @@ MainClass::~MainClass()
     {
         delete _w;
     }
+    if (_mdl_ != nullptr)
+    {
+        delete _mdl_;
+    }
 }
 
 
@@ -37,6 +42,8 @@ int MainClass::init(int argc, char** argv)
     _initShaders();
 
     _mdl.init(_sm.getProgramID(1), 0);
+
+    _mdl_ = new Mdl_example0(_sm.getProgramID(1), 1);
 
     return 1;
 }
@@ -103,7 +110,7 @@ int MainClass::_initGlew()
     printf("GLSL\t %s\n\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 
-/*
+    /*
     printf("Extensions:\t ");
     
     // int howmanyextensions;
