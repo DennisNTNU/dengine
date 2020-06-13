@@ -1,7 +1,7 @@
 #include "mdl/mdl_example0.hpp"
 
 Mdl_example0::Mdl_example0(GLuint shaderID, GLuint textureID)
-	: Mdl_ind_pos_tex(shaderID, textureID)
+    : Mdl_ind_pos_tex(shaderID, textureID)
 {
     unsigned int* indices = nullptr;
     float* vertexPositions = nullptr;

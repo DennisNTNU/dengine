@@ -46,27 +46,6 @@ void Mdl_ind_pos_tex::_initVAO(unsigned int* indices, float* vertexPositions, fl
     glBufferData(GL_ARRAY_BUFFER, 2 * vertexCount*sizeof(float), vertexUVs, GL_STATIC_DRAW);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
     glEnableVertexAttribArray(1);
-
-    printf("Vertex positions:\n");
-    for (int i = 0; i < vertexCount; i++)
-    {
-        printf("%f %f %f\n", vertexPositions[3*i + 0]
-                           , vertexPositions[3*i + 1]
-                           , vertexPositions[3*i + 2]);
-    }
-
-    printf("Vertex UV:\n");
-    for (int i = 0; i < vertexCount; i++)
-    {
-        printf("%f %f\n", vertexUVs[2*i + 0]
-                        , vertexUVs[2*i + 1]);
-    }
-
-    printf("Indices:\n");
-    for (int i = 0; i < _indexCount; i++)
-    {
-        printf("%i\n", indices[i]);
-    }
 }
 
 void Mdl_ind_pos_tex::draw(float* view, float* persp)

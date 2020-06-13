@@ -8,8 +8,8 @@
 #include "util.hpp"
 
 
-ShaderManager::ShaderManager() :
-    _shaderProgramIDs{0}
+ShaderManager::ShaderManager()
+    : _shaderProgramIDs{0}
 {
 
 }
@@ -44,8 +44,6 @@ void ShaderManager::makeProgram(const char* vertexShaderPath, const char* fragme
 
     close(fd_vert);
 
-
-    
 
 
 

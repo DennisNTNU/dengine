@@ -1,5 +1,5 @@
-#ifndef SHADERMANAGER_H
-#define SHADERMANAGER_H
+#ifndef SHADERMANAGER_HPP
+#define SHADERMANAGER_HPP
 
 #include <GL/glew.h>
 

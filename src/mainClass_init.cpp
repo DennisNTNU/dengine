@@ -40,10 +40,11 @@ int MainClass::init(int argc, char** argv)
     if (_initGlew()) return 0;
     _initGLParams();
     _initShaders();
+    //init textures here
+    // _tm.addTexture(0, "AAYYY");
+    _tm.addSampleTexture(31);
 
-    _mdl.init(_sm.getProgramID(1), 0);
-
-    _mdl_ = new Mdl_example0(_sm.getProgramID(1), 1);
+    _mdl_ = new Mdl_example0(_sm.getProgramID(1), _tm.getTextureID(31));
 
     return 1;
 }

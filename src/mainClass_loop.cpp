@@ -53,7 +53,6 @@ void MainClass::_draw()
 {
     _glClear(); checkGLError(__FILE__, __LINE__);
 
-    _mdl.draw(_cam.getViewMatrix_pf(), _cam.getPerspMatrix_pf());
     _mdl_->draw(_cam.getViewMatrix_pf(), _cam.getPerspMatrix_pf());
 
     _w->display();

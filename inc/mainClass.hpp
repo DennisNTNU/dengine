@@ -6,9 +6,9 @@
 #include <glm/glm.hpp>
 
 #include "shaderManager.hpp"
+#include "textureManager.hpp"
 #include "inputManager.hpp"
 #include "camera.hpp"
-#include "mdl/model.hpp"
 #include "mdl/mdl_example0.hpp"
 #include "mdl/mdl_example2.hpp"
 
@@ -42,10 +42,9 @@ private:
     int _width;
     int _height;
     ShaderManager _sm;
+    TextureManager _tm;
     InputManager _im;
     Camera _cam;
-
-    Model _mdl;
 
     Mdl_example0* _mdl_;
 
