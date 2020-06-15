@@ -31,6 +31,10 @@ MainClass::~MainClass()
     {
         delete _mdl_;
     }
+    if (_mdl2 != nullptr)
+    {
+        delete _mdl2;
+    }
 }
 
 
@@ -45,6 +49,8 @@ int MainClass::init(int argc, char** argv)
     _tm.addSampleTexture(31);
 
     _mdl_ = new Mdl_example0(_sm.getProgramID(1), _tm.getTextureID(31));
+    _mdl1 = new Mdl_example1(_sm.getProgramID(2));
+    _mdl2 = new Mdl_example2(_sm.getProgramID(2));
 
     return 1;
 }
@@ -152,6 +158,7 @@ void MainClass::_initGLParams(void)
 void MainClass::_initShaders()
 {
     printf("Initing Shaders\n");
-    _sm.makeProgram("src/shaders/vertexShader.glsl", "src/shaders/fragmentShader.glsl", 0);
-    _sm.makeProgram("src/shaders/textureShader_vert.glsl", "src/shaders/textureShader_frag.glsl", 1);
+    _sm.makeProgram("src/shaders/vPos_vert.glsl", "src/shaders/vPos_frag.glsl", 0);
+    _sm.makeProgram("src/shaders/vPos-vUV_vert.glsl", "src/shaders/vPos-vUV_frag.glsl", 1);
+    _sm.makeProgram("src/shaders/vPos-vCol_vert.glsl", "src/shaders/vPos-vCol_frag.glsl", 2);
 }

@@ -18,8 +18,11 @@ add_library(dengine
     src/mdl/texturedSphere.cpp
     src/mdl/mdl_base.cpp
     src/mdl/mdl_pos.cpp
+    src/mdl/mdl_pos_col.cpp
+    src/mdl/mdl_pos_col_line.cpp
     src/mdl/mdl_ind_pos_tex.cpp
     src/mdl/mdl_example0.cpp
+    src/mdl/mdl_example1.cpp
     src/mdl/mdl_example2.cpp
     src/shaderManager.cpp
     src/textureManager.cpp

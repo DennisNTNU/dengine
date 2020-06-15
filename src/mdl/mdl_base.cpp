@@ -10,5 +10,4 @@ Mdl_base::Mdl_base()
 
 Mdl_base::~Mdl_base()
 {
-    printf("%i: I'm dying\n", _id);
 }

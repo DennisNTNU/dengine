@@ -11,17 +11,14 @@ public:
 	Mdl_pos(GLuint shaderID);
 	~Mdl_pos();
 
-	void extra_function();
-
 	void draw(float* view, float* persp);
 protected:
 	virtual void initData(unsigned int** indices, float** vertexPositions, int* vertexCount) = 0;
 	void _initVAO(unsigned int* indices, float* vertexPositions, int vertexCount);
+
     unsigned int _indexCount;
 private:
-
     GLuint _vaoID;
-
     GLuint _shaderID;
 };
 

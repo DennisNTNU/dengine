@@ -85,13 +85,6 @@ void TextureManager::addSampleTexture(int which)
     int byteCount = 4*pxlCount;
     unsigned char* texData = new unsigned char[byteCount];
 
-    /*
-    for (int i = 3; i < byteCount; i += 4)
-    {
-        textureData[i] = 255;
-    }
-    */
-
     for (int h = 0; h < hght; h++)
     {
         for (int w = 0; w < wdth; w++)
@@ -104,4 +97,6 @@ void TextureManager::addSampleTexture(int which)
     }
 
     addTexture(which, wdth, hght, texData);
+
+    delete[] texData;
 }

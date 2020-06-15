@@ -1,7 +1,7 @@
-#include "mdl/mdl_example2.hpp"
+#include "mdl/mdl_example1.hpp"
 
-Mdl_example2::Mdl_example2(GLuint shaderID)
-    : Mdl_pos_col(shaderID)
+Mdl_example1::Mdl_example1(GLuint shaderID)
+    : Mdl_pos_col_line(shaderID)
 {
     unsigned int* indices = nullptr;
     float* vertexPositions = nullptr;
@@ -17,17 +17,16 @@ Mdl_example2::Mdl_example2(GLuint shaderID)
     delete[] vertexColors;
 }
 
-Mdl_example2::~Mdl_example2()
+Mdl_example1::~Mdl_example1()
 {
 
 }
 
 
-void Mdl_example2::initData(unsigned int** indices, float** vertexPositions, float** vertexColors, int* vertexCount)
+void Mdl_example1::initData(unsigned int** indices, float** vertexPositions, float** vertexColors, int* vertexCount)
 {
     *vertexCount = 6;
-    int triangleCount = 2;
-    _indexCount = 3 * triangleCount;
+    _indexCount = 2 * (*vertexCount);
 
     *indices = new unsigned int[_indexCount];
     *vertexPositions = new float[3 * (*vertexCount)];
@@ -35,35 +34,45 @@ void Mdl_example2::initData(unsigned int** indices, float** vertexPositions, flo
 
     (*indices)[0] = 0;
     (*indices)[1] = 1;
-    (*indices)[2] = 2;
 
-    (*indices)[3] = 3;
-    (*indices)[4] = 4;
-    (*indices)[5] = 5;
+    (*indices)[2] = 1;
+    (*indices)[3] = 2;
 
-    (*vertexPositions)[0] = 1.0f;
+    (*indices)[4] = 2;
+    (*indices)[5] = 3;
+
+    (*indices)[6] = 3;
+    (*indices)[7] = 4;
+
+    (*indices)[8] = 4;
+    (*indices)[9] = 5;
+
+    (*indices)[10] = 5;
+    (*indices)[11] = 0;
+
+    (*vertexPositions)[0] = 2.0f;
     (*vertexPositions)[1] = 0.0f;
     (*vertexPositions)[2] = 0.0f;
 
     (*vertexPositions)[3] = 0.0f;
-    (*vertexPositions)[4] = 1.0f;
+    (*vertexPositions)[4] = 2.0f;
     (*vertexPositions)[5] = 0.0f;
 
-    (*vertexPositions)[6] = -1.0f;
-    (*vertexPositions)[7] = -1.0f;
+    (*vertexPositions)[6] = -2.0f;
+    (*vertexPositions)[7] = -2.0f;
     (*vertexPositions)[8] = 0.0f;
 
-    (*vertexPositions)[9] = -1.0f;
-    (*vertexPositions)[10] = 1.0f;
+    (*vertexPositions)[9] = -2.0f;
+    (*vertexPositions)[10] = 2.0f;
     (*vertexPositions)[11] = 0.0f;
 
     (*vertexPositions)[12] = 0.0f;
-    (*vertexPositions)[13] = 1.0f;
-    (*vertexPositions)[14] = -1.0f;
+    (*vertexPositions)[13] = 2.0f;
+    (*vertexPositions)[14] = -2.0f;
 
-    (*vertexPositions)[15] = 1.0f;
-    (*vertexPositions)[16] = 1.0f;
-    (*vertexPositions)[17] = 1.0f;
+    (*vertexPositions)[15] = 2.0f;
+    (*vertexPositions)[16] = 2.0f;
+    (*vertexPositions)[17] = 2.0f;
 
     (*vertexColors)[0] = 1.0f;
     (*vertexColors)[1] = 0.0f;
