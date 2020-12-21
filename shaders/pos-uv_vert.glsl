@@ -1,7 +1,7 @@
 #version 330 core
 
-in layout(location = 0) vec3 vertexPosition;
-in layout(location = 1) vec2 vertexUV;
+layout(location = 0) in vec3 vertexPosition;
+layout(location = 1) in vec2 vertexUV;
 //in layout(location = 2) vec3 vertexNormal;
 
 

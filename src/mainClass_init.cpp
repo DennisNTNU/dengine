@@ -44,9 +44,10 @@ int MainClass::init(int argc, char** argv)
     if (_initGlew()) return 0;
     _initGLParams();
     _initShaders();
-    //init textures here
+    // init textures
     // _tm.addTexture(0, "AAYYY");
     _tm.addSampleTexture(31);
+
 
     _mdl_ = new Mdl_example0(_sm.getProgramID(1), _tm.getTextureID(31));
     _mdl1 = new Mdl_example1(_sm.getProgramID(2));
@@ -54,10 +55,6 @@ int MainClass::init(int argc, char** argv)
 
     return 1;
 }
-
-
-
-
 
 
 
@@ -85,11 +82,9 @@ int MainClass::_initWindow()
 
     printWindowSettings(_w);
 
-    //w = setupWindow();
-
     if (!_w)
     {
-        printf("Error initing window: %lx\n", (unsigned long)_w);
+        printf("Error initing window.\n");
         return -1;
     }
 
@@ -158,7 +153,7 @@ void MainClass::_initGLParams(void)
 void MainClass::_initShaders()
 {
     printf("Initing Shaders\n");
-    _sm.makeProgram("src/shaders/vPos_vert.glsl", "src/shaders/vPos_frag.glsl", 0);
-    _sm.makeProgram("src/shaders/vPos-vUV_vert.glsl", "src/shaders/vPos-vUV_frag.glsl", 1);
-    _sm.makeProgram("src/shaders/vPos-vCol_vert.glsl", "src/shaders/vPos-vCol_frag.glsl", 2);
+    _sm.makeProgram("shaders/pos_vert.glsl", "shaders/pos_frag.glsl", 0);
+    _sm.makeProgram("shaders/pos-uv_vert.glsl",  "shaders/pos-uv_frag.glsl", 1);
+    _sm.makeProgram("shaders/pos-col_vert.glsl", "shaders/pos-col_frag.glsl", 2);
 }
