@@ -30,6 +30,8 @@ public:
 
 	int whoami() {return _id;}
 
+	void translate(float x, float y, float z);
+
 	virtual void draw(float* view, float* persp) = 0;
 protected:
 	int _id;

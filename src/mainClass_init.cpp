@@ -11,8 +11,7 @@ MainClass::MainClass()
     , _hasWindowFocus(true)
     , _width(1280)
     , _height(720)
-    , _mdl_(nullptr)
-    , dt(0.1)
+    , dt(0.016666)
     , targetFrameTime(0.016666) // 60fps -> 16.66ms
 {
     gettimeofday(&tv, 0);
@@ -27,13 +26,9 @@ MainClass::~MainClass()
     {
         delete _w;
     }
-    if (_mdl_ != nullptr)
+    for (int i = 0; i < _models.size(); i++)
     {
-        delete _mdl_;
-    }
-    if (_mdl2 != nullptr)
-    {
-        delete _mdl2;
+        delete _models[i];
     }
 }
 
@@ -48,11 +43,22 @@ int MainClass::init(int argc, char** argv)
     // _tm.addTexture(0, "AAYYY");
     _tm.addSampleTexture(31);
 
+    printf("Initing models\n");
+    Mdl_example0* mdl0 = new Mdl_example0(_sm.getProgramID(1), _tm.getGLTextureID(31));
+    Mdl_example1* mdl1 = new Mdl_example1(_sm.getProgramID(2));
+    Mdl_example2* mdl2 = new Mdl_example2(_sm.getProgramID(2));
 
-    _mdl_ = new Mdl_example0(_sm.getProgramID(1), _tm.getGLTextureID(31));
-    _mdl1 = new Mdl_example1(_sm.getProgramID(2));
-    _mdl2 = new Mdl_example2(_sm.getProgramID(2));
+    mdl0->translate(0.0, 2.0, 0.0);
+    mdl1->translate(0.0, -1.0, 2.0);
+    mdl2->translate(0.0, 1.0, -2.0);
+    _models.push_back(mdl0);
+    _models.push_back(mdl1);
+    _models.push_back(mdl2);
 
+    Mdl_axes_orthnorm* axes = new Mdl_axes_orthnorm(_sm.getProgramID(2));
+    _models.push_back(axes);
+
+    printf("Initing done.\n");
     return 1;
 }
 
@@ -78,7 +84,7 @@ int MainClass::_initWindow()
     float aspectRatio = float(sz.x) / float(sz.y);
 
     _cam.setPersp(aspectRatio, 90.0f * 3.141592653589793238462f / 180.0f, 0.01f, 100.0f);
-    _cam.setPosition(4.5f, 1.0f, 1.0f);
+    _cam.setPosition(0.0f, 1.0f, 5.0f);
 
     printWindowSettings(_w);
 
@@ -106,7 +112,7 @@ int MainClass::_initGlew()
         return -1;
     }
 
-    printf("%s: %s\n", glGetString(GL_VENDOR), glGetString(GL_RENDERER));
+    printf("Vendor: %s\nRenderer: %s\n", glGetString(GL_VENDOR), glGetString(GL_RENDERER));
     //printf("GLFW\t %s\n", glfwGetVersionString());
     printf("OpenGL\t %s\n", glGetString(GL_VERSION));
     printf("GLSL\t %s\n\n", glGetString(GL_SHADING_LANGUAGE_VERSION));

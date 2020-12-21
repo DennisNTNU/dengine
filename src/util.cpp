@@ -65,9 +65,9 @@ void printWindowSettings(sf::Window* window)
     {
         sf::ContextSettings settings2 = window->getSettings();
 
-        printf("depth bits: %i, ", settings2.depthBits);
-        printf("stencilBits: %i, ", settings2.stencilBits);
-        printf("antialiasingLevel: %i, ", settings2.antialiasingLevel);
+        printf("Window settings:\nDepth bits: %i, ", settings2.depthBits);
+        printf("StencilBits: %i, ", settings2.stencilBits);
+        printf("AntialiasingLevel: %i, ", settings2.antialiasingLevel);
         printf("GL major: %i, ", settings2.majorVersion);
         printf("GL minor: %i\n", settings2.minorVersion);
     }

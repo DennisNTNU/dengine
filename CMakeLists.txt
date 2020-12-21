@@ -24,6 +24,7 @@ add_library(dengine
     src/mdl/mdl_example0.cpp
     src/mdl/mdl_example1.cpp
     src/mdl/mdl_example2.cpp
+    src/mdl/mdl_axes_orthnorm.cpp
     src/shaderManager.cpp
     src/textureManager.cpp
     src/util.cpp

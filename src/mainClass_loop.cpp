@@ -26,14 +26,15 @@ void MainClass::loop()
 
             _draw();
 
-            if ( (i++ % 20) == 0)
+            if ( (i++ % 30) == 0)
             {
                 printf("%s: Frame time: %f ms\n", __FUNCTION__, 1000.0*dt);
             }
         }
         else
         {
-            usleep(int((targetFrameTime - dt)*1000000));
+            // only need this usleep if vync is off
+            //usleep(int((targetFrameTime - dt)*1000000));
         }
     }
 }
@@ -53,9 +54,10 @@ void MainClass::_draw()
 {
     _glClear(); checkGLError(__FILE__, __LINE__);
 
-    _mdl_->draw(_cam.getViewMatrix_pf(), _cam.getPerspMatrix_pf());
-    _mdl1->draw(_cam.getViewMatrix_pf(), _cam.getPerspMatrix_pf());
-    _mdl2->draw(_cam.getViewMatrix_pf(), _cam.getPerspMatrix_pf());
+    for (int i = 0; i < _models.size(); i++)
+    {
+        _models[i]->draw(_cam.getViewMatrix_pf(), _cam.getPerspMatrix_pf());
+    }
 
     _w->display();
 }

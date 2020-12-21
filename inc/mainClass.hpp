@@ -1,6 +1,8 @@
 #ifndef LOOP_H
 #define LOOP_H
 
+#include <vector>
+
 #include <GL/glew.h> // for glGetError(), gluErrorString()
 #include <SFML/Window.hpp> // for sf::Window, sf::VideoMode()
 #include <glm/glm.hpp>
@@ -9,9 +11,11 @@
 #include "textureManager.hpp"
 #include "inputManager.hpp"
 #include "camera.hpp"
+#include "mdl/mdl_base.hpp"
 #include "mdl/mdl_example0.hpp"
 #include "mdl/mdl_example1.hpp"
 #include "mdl/mdl_example2.hpp"
+#include "mdl/mdl_axes_orthnorm.hpp"
 
 class MainClass
 {
@@ -47,9 +51,7 @@ private:
     InputManager _im;
     Camera _cam;
 
-    Mdl_example0* _mdl_;
-    Mdl_example1* _mdl1;
-    Mdl_example2* _mdl2;
+    std::vector<Mdl_base*> _models;
 
     struct timeval tv;
     struct timeval tv_prev;
