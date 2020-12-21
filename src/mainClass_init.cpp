@@ -49,7 +49,7 @@ int MainClass::init(int argc, char** argv)
     _tm.addSampleTexture(31);
 
 
-    _mdl_ = new Mdl_example0(_sm.getProgramID(1), _tm.getTextureID(31));
+    _mdl_ = new Mdl_example0(_sm.getProgramID(1), _tm.getGLTextureID(31));
     _mdl1 = new Mdl_example1(_sm.getProgramID(2));
     _mdl2 = new Mdl_example2(_sm.getProgramID(2));
 

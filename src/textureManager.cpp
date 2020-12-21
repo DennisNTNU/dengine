@@ -19,32 +19,32 @@ TextureManager::~TextureManager()
     }
 }
 
-void TextureManager::addTexture(int which, const char* texturePath)
+void TextureManager::addTexture(int textureManagerTextureID, const char* texturePath)
 {
 
 }
 
-void TextureManager::addTexture(int which, int width, int height, unsigned char* textureData)
+void TextureManager::addTexture(int textureManagerTextureID, int width, int height, unsigned char* textureData)
 {
-    if (which >= TEXTUREMANAGER_MAX_TEXTURES)
+    if (textureManagerTextureID >= TEXTUREMANAGER_MAX_TEXTURES)
     {
         return;
     }
 
-    if (_textureIDs[which] != 0)
+    if (_textureIDs[textureManagerTextureID] != 0)
     {
         // delete preexisting texture
-        glDeleteTextures(1, &(_textureIDs[which]));
+        glDeleteTextures(1, &(_textureIDs[textureManagerTextureID]));
     }
 
-    glGenTextures(1, &(_textureIDs[which]));
+    glGenTextures(1, &(_textureIDs[textureManagerTextureID]));
     checkGLError(__FILE__, __LINE__);
 
     // doesnt need to call this here
     //glActiveTexture(GL_TEXTURE0);
     //checkGLError(__FILE__, __LINE__);
 
-    glBindTexture(GL_TEXTURE_2D, _textureIDs[which]);
+    glBindTexture(GL_TEXTURE_2D, _textureIDs[textureManagerTextureID]);
     checkGLError(__FILE__, __LINE__);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -65,19 +65,19 @@ void TextureManager::addTexture(int which, int width, int height, unsigned char*
     glBindTexture(GL_TEXTURE_2D, 0);
     checkGLError(__FILE__, __LINE__);
 
-    printf("Texture ID: %i\n", _textureIDs[which]);
+    printf("Texture ID: %i\n", _textureIDs[textureManagerTextureID]);
 }
 
-GLuint TextureManager::getTextureID(int which)
+GLuint TextureManager::getGLTextureID(int textureManagerTextureID)
 {
-    if (which < TEXTUREMANAGER_MAX_TEXTURES)
+    if (textureManagerTextureID < TEXTUREMANAGER_MAX_TEXTURES)
     {
-        return _textureIDs[which];
+        return _textureIDs[textureManagerTextureID];
     }
     return -1;
 }
 
-void TextureManager::addSampleTexture(int which)
+void TextureManager::addSampleTexture(int textureManagerTextureID)
 {
     int wdth = 1024;
     int hght = 1024;
@@ -92,11 +92,11 @@ void TextureManager::addSampleTexture(int which)
             texData[h*wdth*4 + w*4 + 0] = w/4;
             texData[h*wdth*4 + w*4 + 1] = 0;
             texData[h*wdth*4 + w*4 + 2] = 0;
-            texData[h*wdth*4 + w*4 + 3] = 155;
+            texData[h*wdth*4 + w*4 + 3] = 55;
         }
     }
 
-    addTexture(which, wdth, hght, texData);
+    addTexture(textureManagerTextureID, wdth, hght, texData);
 
     delete[] texData;
 }

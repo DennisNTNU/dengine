@@ -11,11 +11,11 @@ public:
     TextureManager();
     ~TextureManager();
 
-    void addTexture(int which, const char* texturePath);
-    void addTexture(int which, int width, int height, unsigned char* textureData);
-    void addSampleTexture(int which);
+    void addTexture(int textureManagerTextureID, const char* texturePath);
+    void addTexture(int textureManagerTextureID, int width, int height, unsigned char* textureData);
+    void addSampleTexture(int textureManagerTextureID);
 
-    GLuint getTextureID(int which);
+    GLuint getGLTextureID(int textureManagerTextureID);
 private:
     GLuint _textureIDs[TEXTUREMANAGER_MAX_TEXTURES];
 };

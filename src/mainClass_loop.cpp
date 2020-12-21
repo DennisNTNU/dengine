@@ -28,7 +28,7 @@ void MainClass::loop()
 
             if ( (i++ % 20) == 0)
             {
-                printf("%s: Frametime: %f\n------------------ %f\n", __FUNCTION__, dt, _cam.getPos()[2]);
+                printf("%s: Frame time: %f ms\n", __FUNCTION__, 1000.0*dt);
             }
         }
         else
