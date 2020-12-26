@@ -32,7 +32,7 @@ public:
 
 	void translate(float x, float y, float z);
 
-	virtual void draw(float* view, float* persp) = 0;
+	virtual void draw(float* view, float* persp, void* otherdata) = 0;
 protected:
 	int _id;
     glm::mat4 _model;

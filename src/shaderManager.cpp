@@ -19,7 +19,7 @@ ShaderManager::~ShaderManager()
 
 }
 
-void ShaderManager::makeProgram(const char* vertexShaderPath, const char* fragmentShaderPath, int which)
+void ShaderManager::addProgram(int which, const char* vertexShaderPath, const char* fragmentShaderPath)
 {
 
 
@@ -183,6 +183,8 @@ void ShaderManager::makeProgram(const char* vertexShaderPath, const char* fragme
     checkGLError(__FILE__, __LINE__);
     glDeleteShader(fragmentShaderID);
     checkGLError(__FILE__, __LINE__);
+
+    printf("Shader program ID: %i\n", _shaderProgramIDs[which]);
 }
 
 

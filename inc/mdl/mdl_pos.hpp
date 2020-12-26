@@ -11,7 +11,7 @@ public:
 	Mdl_pos(GLuint shaderID);
 	~Mdl_pos();
 
-	void draw(float* view, float* persp);
+	void draw(float* view, float* persp, void* otherdata);
 protected:
 	virtual void initData(unsigned int** indices, float** vertexPositions, int* vertexCount) = 0;
 	void _initVAO(unsigned int* indices, float* vertexPositions, int vertexCount);

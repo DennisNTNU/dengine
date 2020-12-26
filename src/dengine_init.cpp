@@ -1,6 +1,7 @@
-#include "mainClass.hpp"
+#include "dengine.hpp"
 
 #include <sys/time.h> // for gettimeofday()
+#include <string.h> // for strcmp()
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -11,7 +12,7 @@
 #include "mdl/mdl_pos_tex_obj.hpp"
 #include "util.hpp"
 
-MainClass::MainClass()
+Dengine::Dengine()
     : _w(nullptr)
     , _hasWindowFocus(true)
     , _width(1280)
@@ -22,10 +23,10 @@ MainClass::MainClass()
     gettimeofday(&tv, 0);
     gettimeofday(&tv_prev, 0);
 
-    _im.setMouseCenterCoords(_width/2, _height/2);
+    im.setMouseCenterCoords(_width/2, _height/2);
 }
 
-MainClass::~MainClass()
+Dengine::~Dengine()
 {
     if (_w != nullptr)
     {
@@ -38,57 +39,74 @@ MainClass::~MainClass()
 }
 
 
-int MainClass::init(int argc, char** argv)
+int Dengine::init(int argc, char** argv)
 {
-    if (_initWindow()) return 0;
-    if (_initGlew()) return 0;
+    if (_initWindow()) return 1;
+    if (_initGlew()) return 1;
     _initGLParams();
-    _initShaders();
-    // init textures
-    // _tm.addTexture(0, "AAYYY");
-    _tm.addSampleTexture(31);
-    //_tm.addTexture(0, "/home/den/Documents/NNDLwebsite/Page1/Neural networks and deep learning_files/tikz9.png");
-    _tm.addTexture(0, "/home/den/Documents/NNDLwebsite/Screenshot2020-03-10-080137.png");
 
-    printf("Initing models\n");
-    Mdl_example0* mdl0 = new Mdl_example0(_sm.getProgramID(1), _tm.getGLTextureID(31));
-    Mdl_example1* mdl1 = new Mdl_example1(_sm.getProgramID(2));
-    Mdl_example2* mdl2 = new Mdl_example2(_sm.getProgramID(2));
-
-    mdl0->translate(0.0, 2.0, 0.0);
-    mdl1->translate(0.0, -1.0, 2.0);
-    mdl2->translate(0.0, 1.0, -2.0);
-    _models.push_back(mdl0);
-    _models.push_back(mdl1);
-    _models.push_back(mdl2);
-
-    Mdl_axes_orthnorm* axes = new Mdl_axes_orthnorm(_sm.getProgramID(2));
-    _models.push_back(axes);
-
-    
-    Mdl_pos_tex_obj* obj = new Mdl_pos_tex_obj(_sm.getProgramID(1), _tm.getGLTextureID(0), "../../test_with_normals.obj");
-    //Mdl_pos_tex_obj* obj = new Mdl_pos_tex_obj(_sm.getProgramID(1), _tm.getGLTextureID(31), "../../cube.obj");
-    //Mdl_pos_tex_obj* obj = new Mdl_pos_tex_obj(_sm.getProgramID(1), _tm.getGLTextureID(31), "../../cube_with_normals.obj");
-    //Mdl_pos_tex_obj* obj = new Mdl_pos_tex_obj(_sm.getProgramID(1), _tm.getGLTextureID(31), "../../plane_with_normals.obj");
-    obj->translate(-4.0, 0.0, 0.0);
-    _models.push_back(obj);
-
-    printf("Initing done.\n");
-    return 1;
+    return 0;
 }
 /*
-int MainClass::addModel(float* positions, float* uvs, int vertex_count, int* indices, int index_count)
+int Dengine::addModel(float* positions, float* uvs, int vertex_count, int* indices, int index_count)
 {
     //mdl0
     //_models.push_back(mdl0);
     return 0;
 }
-
-
 */
 
+void Dengine::addModel(const char* model, int shaderID, int texID)
+{
+    if (strcmp(model, "mdl_axes_orthnorm") == 0)
+    {
+        if (shaderID != 0)
+        {
+            Mdl_axes_orthnorm* axes = new Mdl_axes_orthnorm(shaderID);
+            _models.push_back(axes);
+        }
+    }
+    else if (strcmp(model, "mdl_example0") == 0)
+    {
+        if (shaderID != 0 && texID != 0)
+        {
+            Mdl_example0* mdl0 = new Mdl_example0(shaderID, texID);
+            _models.push_back(mdl0);
+        }
+    }
+    else if (strcmp(model, "mdl_example1") == 0)
+    {
+        if (shaderID != 0)
+        {
+            Mdl_example1* mdl1 = new Mdl_example1(shaderID);
+            _models.push_back(mdl1);
+        }
+    }
+    else if (strcmp(model, "mdl_example2") == 0)
+    {
+        if (shaderID != 0)
+        {
+            Mdl_example2* mdl2 = new Mdl_example2(shaderID);
+            _models.push_back(mdl2);
+        }
+    }
+}
 
-int MainClass::_initWindow()
+
+int Dengine::addModel(int shaderID, int texID, const char* objModelPath)
+{
+    Mdl_pos_tex_obj* obj = new Mdl_pos_tex_obj(shaderID, texID, objModelPath);
+    _models.push_back(obj);
+
+}
+
+
+void Dengine::translateLastAddedModel(float x, float y, float z)
+{
+    _models.back()->translate(x, y, z);
+}
+
+int Dengine::_initWindow()
 {
 
     sf::ContextSettings settings;
@@ -123,7 +141,7 @@ int MainClass::_initWindow()
     return 0;
 }
 
-int MainClass::_initGlew()
+int Dengine::_initGlew()
 {
     //glewExperimental = GL_TRUE; // apparently not needed
     GLenum glewError = glewInit();
@@ -134,7 +152,7 @@ int MainClass::_initGlew()
     }
 
     printf("Vendor: %s\nRenderer: %s\n", glGetString(GL_VENDOR), glGetString(GL_RENDERER));
-    //printf("GLFW\t %s\n", glfwGetVersionString());
+    //printf("GLFW\t %s\n", glfwGetVersionString()); // glfwGetVersionString() undefined?
     printf("OpenGL\t %s\n", glGetString(GL_VERSION));
     printf("GLSL\t %s\n\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
@@ -161,7 +179,7 @@ int MainClass::_initGlew()
     return 0;
 }
 
-void MainClass::_initGLParams(void)
+void Dengine::_initGLParams(void)
 {
     // https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glEnable.xml
 
@@ -175,12 +193,4 @@ void MainClass::_initGLParams(void)
 
     // face culling
     //glEnable(GL_CULL_FACE);
-}
-
-void MainClass::_initShaders()
-{
-    printf("Initing Shaders\n");
-    _sm.makeProgram("shaders/pos_vert.glsl", "shaders/pos_frag.glsl", 0);
-    _sm.makeProgram("shaders/pos-uv_vert.glsl",  "shaders/pos-uv_frag.glsl", 1);
-    _sm.makeProgram("shaders/pos-col_vert.glsl", "shaders/pos-col_frag.glsl", 2);
 }

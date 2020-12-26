@@ -41,7 +41,7 @@ void Mdl_pos::_initVAO(unsigned int* indices, float* vertexPositions, int vertex
     glEnableVertexAttribArray(0);
 }
 
-void Mdl_pos::draw(float* view, float* persp)
+void Mdl_pos::draw(float* view, float* persp, void* otherdata)
 {
     glUseProgram(_shaderID);
     checkGLError(__FILE__, __LINE__);

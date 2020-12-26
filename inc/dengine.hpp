@@ -13,23 +13,34 @@
 #include "camera.hpp"
 #include "mdl/mdl_base.hpp"
 
-class MainClass
+class Dengine
 {
 public:
-    MainClass();
-    ~MainClass();
+    Dengine();
+    ~Dengine();
 
     int init(int argc, char** argv);
 
-    //int addModel(float* positions, float* uvs, int vertex_count, int* indices, int index_count);
+    void addModel(const char* model, int shaderID, int texID);
+    int addModel(int shaderID, int texID, const char* objModelPath);
+    //int addModel(int shaderID, const char* objModelPath);
+    int addModel(float* positions, float* uvs, int vertex_count, int* indices, int index_count);
+
+    void translateLastAddedModel(float x, float y, float z);
 
     void loop();
 
+    std::vector<Mdl_base*> _models;
+
+    ShaderManager sm;
+    TextureManager tm;
+    InputManager im;
 private:
     int _initWindow();
     int _initGlew();
     void _initGLParams();
     void _initShaders();
+
 
     bool _handleSFMLEvents();
     bool _handleInput();
@@ -45,12 +56,7 @@ private:
     bool _hasWindowFocus;
     int _width;
     int _height;
-    ShaderManager _sm;
-    TextureManager _tm;
-    InputManager _im;
     Camera _cam;
-
-    std::vector<Mdl_base*> _models;
 
     struct timeval tv;
     struct timeval tv_prev;

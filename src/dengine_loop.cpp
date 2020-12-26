@@ -1,4 +1,4 @@
-#include "mainClass.hpp"
+#include "dengine.hpp"
 
 #include <unistd.h> // for usleep()
 #include <sys/time.h> // for gettimeofday()
@@ -7,7 +7,7 @@
 
 
 
-void MainClass::loop()
+void Dengine::loop()
 {
     int i = 0;
     while (_w->isOpen())
@@ -45,25 +45,25 @@ void MainClass::loop()
 
 
 
-void MainClass::_updateScene(double dt)
+void Dengine::_updateScene(double dt)
 {
     _cam.update(dt);
 }
 
-void MainClass::_draw()
+void Dengine::_draw()
 {
     _glClear(); checkGLError(__FILE__, __LINE__);
 
     for (int i = 0; i < _models.size(); i++)
     {
-        _models[i]->draw(_cam.getViewMatrix_pf(), _cam.getPerspMatrix_pf());
+        _models[i]->draw(_cam.getViewMatrix_pf(), _cam.getPerspMatrix_pf(), NULL);
     }
 
     _w->display();
 }
 
 
-void MainClass::_glClear()
+void Dengine::_glClear()
 {
     glClearColor(0.2f, 0.4f, 0.8f, 1.0f);
 

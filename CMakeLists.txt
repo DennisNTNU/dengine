@@ -10,9 +10,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 add_library(dengine 
     src/camera.cpp
     src/inputManager.cpp
-    src/mainClass_init.cpp
-    src/mainClass_input.cpp
-    src/mainClass_loop.cpp
+    src/dengine_init.cpp
+    src/dengine_input.cpp
+    src/dengine_loop.cpp
     #src/mdl/model.cpp
     src/mdl/sphereVAO.cpp
     src/mdl/texturedSphere.cpp
