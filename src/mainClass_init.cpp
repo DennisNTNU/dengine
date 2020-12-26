@@ -4,6 +4,11 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "mdl/mdl_example0.hpp"
+#include "mdl/mdl_example1.hpp"
+#include "mdl/mdl_example2.hpp"
+#include "mdl/mdl_axes_orthnorm.hpp"
+#include "mdl/mdl_pos_tex_obj.hpp"
 #include "util.hpp"
 
 MainClass::MainClass()
@@ -58,13 +63,27 @@ int MainClass::init(int argc, char** argv)
     Mdl_axes_orthnorm* axes = new Mdl_axes_orthnorm(_sm.getProgramID(2));
     _models.push_back(axes);
 
+    
+    Mdl_pos_tex_obj* obj = new Mdl_pos_tex_obj(_sm.getProgramID(1), _tm.getGLTextureID(31), "../../test_with_normals.obj");
+    //Mdl_pos_tex_obj* obj = new Mdl_pos_tex_obj(_sm.getProgramID(1), _tm.getGLTextureID(31), "../../cube.obj");
+    //Mdl_pos_tex_obj* obj = new Mdl_pos_tex_obj(_sm.getProgramID(1), _tm.getGLTextureID(31), "../../cube_with_normals.obj");
+    //Mdl_pos_tex_obj* obj = new Mdl_pos_tex_obj(_sm.getProgramID(1), _tm.getGLTextureID(31), "../../plane_with_normals.obj");
+    obj->translate(-4.0, 0.0, 0.0);
+    _models.push_back(obj);
+
     printf("Initing done.\n");
     return 1;
 }
+/*
+int MainClass::addModel(float* positions, float* uvs, int vertex_count, int* indices, int index_count)
+{
+    //mdl0
+    //_models.push_back(mdl0);
+    return 0;
+}
 
 
-
-
+*/
 
 
 int MainClass::_initWindow()

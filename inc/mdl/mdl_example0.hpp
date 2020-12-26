@@ -5,7 +5,7 @@
 
 #include <GL/glew.h>
 
-class Mdl_example0 : public Mdl_ind_pos_tex
+class Mdl_example0 : public Mdl_pos_tex
 {
 public:
 	Mdl_example0(GLuint shaderID, GLuint textureID);

@@ -12,10 +12,6 @@
 #include "inputManager.hpp"
 #include "camera.hpp"
 #include "mdl/mdl_base.hpp"
-#include "mdl/mdl_example0.hpp"
-#include "mdl/mdl_example1.hpp"
-#include "mdl/mdl_example2.hpp"
-#include "mdl/mdl_axes_orthnorm.hpp"
 
 class MainClass
 {
@@ -24,6 +20,9 @@ public:
     ~MainClass();
 
     int init(int argc, char** argv);
+
+    //int addModel(float* positions, float* uvs, int vertex_count, int* indices, int index_count);
+
     void loop();
 
 private:

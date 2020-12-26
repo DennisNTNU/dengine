@@ -5,11 +5,11 @@
 
 #include <GL/glew.h>
 
-class Mdl_ind_pos_tex : public Mdl_base
+class Mdl_pos_tex : public Mdl_base
 {
 public:
-	Mdl_ind_pos_tex(GLuint shaderID, GLuint textureID);
-	~Mdl_ind_pos_tex();
+	Mdl_pos_tex(GLuint shaderID, GLuint textureID);
+	~Mdl_pos_tex();
 
 	void extra_function();
 

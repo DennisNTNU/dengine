@@ -25,9 +25,11 @@ add_library(dengine
     src/mdl/mdl_example1.cpp
     src/mdl/mdl_example2.cpp
     src/mdl/mdl_axes_orthnorm.cpp
+    src/mdl/mdl_pos_tex_obj.cpp
     src/shaderManager.cpp
     src/textureManager.cpp
     src/util.cpp
+    src/obj_import.c
     )
 
 target_include_directories(dengine PUBLIC inc)

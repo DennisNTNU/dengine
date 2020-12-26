@@ -2,7 +2,7 @@
 
 #include "util.hpp"
 
-Mdl_ind_pos_tex::Mdl_ind_pos_tex(GLuint shaderID, GLuint textureID)
+Mdl_pos_tex::Mdl_pos_tex(GLuint shaderID, GLuint textureID)
     : _indexCount(0)
     , _vaoID(0)
     , _textureID(0)
@@ -13,7 +13,7 @@ Mdl_ind_pos_tex::Mdl_ind_pos_tex(GLuint shaderID, GLuint textureID)
     _textureID = textureID;
 }
 
-Mdl_ind_pos_tex::~Mdl_ind_pos_tex()
+Mdl_pos_tex::~Mdl_pos_tex()
 {
     if (_vaoID != 0)
     {
@@ -21,7 +21,7 @@ Mdl_ind_pos_tex::~Mdl_ind_pos_tex()
     }
 }
 
-void Mdl_ind_pos_tex::_initVAO(unsigned int* indices, float* vertexPositions, float* vertexUVs, int vertexCount)
+void Mdl_pos_tex::_initVAO(unsigned int* indices, float* vertexPositions, float* vertexUVs, int vertexCount)
 {
     if (_vaoID != 0)
     {
@@ -48,7 +48,7 @@ void Mdl_ind_pos_tex::_initVAO(unsigned int* indices, float* vertexPositions, fl
     glEnableVertexAttribArray(1);
 }
 
-void Mdl_ind_pos_tex::draw(float* view, float* persp)
+void Mdl_pos_tex::draw(float* view, float* persp)
 {
     glUseProgram(_shaderID);
     checkGLError(__FILE__, __LINE__);

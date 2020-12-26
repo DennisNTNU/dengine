@@ -1,6 +1,10 @@
-#include "mdl/mdl_example0.hpp"
+#include "mdl/mdl_pos_tex_obj.hpp"
 
-Mdl_example0::Mdl_example0(GLuint shaderID, GLuint textureID)
+extern "C" {
+#include "obj_import.h"
+}
+
+Mdl_pos_tex_obj::Mdl_pos_tex_obj(GLuint shaderID, GLuint textureID, const char* obj_file_path)
     : Mdl_pos_tex(shaderID, textureID)
 {
     unsigned int* indices = nullptr;
@@ -8,22 +12,25 @@ Mdl_example0::Mdl_example0(GLuint shaderID, GLuint textureID)
     float* vertexUVs = nullptr;
     int vertexCount = 0;
 
-    initData(&indices, &vertexPositions, &vertexUVs, &vertexCount);
+    //initData(&indices, &vertexPositions, &vertexUVs, &vertexCount);
+    int ret = importObj(obj_file_path, &vertexPositions, &vertexUVs, &vertexCount, &indices, &_indexCount);
 
-    _initVAO(indices, vertexPositions, vertexUVs, vertexCount);
-
-    delete[] indices;
-    delete[] vertexPositions;
-    delete[] vertexUVs;
+    if (ret == 0)
+    {
+        _initVAO(indices, vertexPositions, vertexUVs, vertexCount);
+        delete[] indices;
+        delete[] vertexPositions;
+        delete[] vertexUVs;
+    }
 }
 
-Mdl_example0::~Mdl_example0()
+Mdl_pos_tex_obj::~Mdl_pos_tex_obj()
 {
 
 }
 
 
-void Mdl_example0::initData(unsigned int** indices, float** vertexPositions, float** vertexUVs, int* vertexCount)
+void Mdl_pos_tex_obj::initData(unsigned int** indices, float** vertexPositions, float** vertexUVs, int* vertexCount)
 {
     *vertexCount = 30;
     int triangleCount = 24;

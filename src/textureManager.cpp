@@ -92,7 +92,7 @@ void TextureManager::addSampleTexture(int textureManagerTextureID)
             texData[h*wdth*4 + w*4 + 0] = w/4;
             texData[h*wdth*4 + w*4 + 1] = 0;
             texData[h*wdth*4 + w*4 + 2] = 0;
-            texData[h*wdth*4 + w*4 + 3] = 55;
+            texData[h*wdth*4 + w*4 + 3] = 255;
         }
     }
 
