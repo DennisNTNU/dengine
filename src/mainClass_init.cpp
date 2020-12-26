@@ -47,6 +47,8 @@ int MainClass::init(int argc, char** argv)
     // init textures
     // _tm.addTexture(0, "AAYYY");
     _tm.addSampleTexture(31);
+    //_tm.addTexture(0, "/home/den/Documents/NNDLwebsite/Page1/Neural networks and deep learning_files/tikz9.png");
+    _tm.addTexture(0, "/home/den/Documents/NNDLwebsite/Screenshot2020-03-10-080137.png");
 
     printf("Initing models\n");
     Mdl_example0* mdl0 = new Mdl_example0(_sm.getProgramID(1), _tm.getGLTextureID(31));
@@ -64,7 +66,7 @@ int MainClass::init(int argc, char** argv)
     _models.push_back(axes);
 
     
-    Mdl_pos_tex_obj* obj = new Mdl_pos_tex_obj(_sm.getProgramID(1), _tm.getGLTextureID(31), "../../test_with_normals.obj");
+    Mdl_pos_tex_obj* obj = new Mdl_pos_tex_obj(_sm.getProgramID(1), _tm.getGLTextureID(0), "../../test_with_normals.obj");
     //Mdl_pos_tex_obj* obj = new Mdl_pos_tex_obj(_sm.getProgramID(1), _tm.getGLTextureID(31), "../../cube.obj");
     //Mdl_pos_tex_obj* obj = new Mdl_pos_tex_obj(_sm.getProgramID(1), _tm.getGLTextureID(31), "../../cube_with_normals.obj");
     //Mdl_pos_tex_obj* obj = new Mdl_pos_tex_obj(_sm.getProgramID(1), _tm.getGLTextureID(31), "../../plane_with_normals.obj");

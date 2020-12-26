@@ -1,6 +1,7 @@
 #include "textureManager.hpp"
 
 #include "util.hpp" // for checkGLError()
+#include "lodepng.h"
 
 TextureManager::TextureManager()
     : _textureIDs{0}
@@ -21,10 +22,19 @@ TextureManager::~TextureManager()
 
 void TextureManager::addTexture(int textureManagerTextureID, const char* texturePath)
 {
-
+    unsigned int width = 0;
+    unsigned int height = 0;
+    unsigned char* image = NULL;
+    int error = lodepng_decode32_file(&image, &width, &height, texturePath);
+    if(error)
+    {
+        printf("Reading image error %u: %s\nTexture %i not added\n", error, lodepng_error_text(error), textureManagerTextureID);
+        return;
+    }
+    addTexture(textureManagerTextureID, width, height, image);
 }
 
-void TextureManager::addTexture(int textureManagerTextureID, int width, int height, unsigned char* textureData)
+void TextureManager::addTexture(int textureManagerTextureID, unsigned int width, unsigned int height, unsigned char* textureData)
 {
     if (textureManagerTextureID >= TEXTUREMANAGER_MAX_TEXTURES)
     {

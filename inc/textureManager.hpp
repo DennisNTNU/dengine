@@ -12,7 +12,7 @@ public:
     ~TextureManager();
 
     void addTexture(int textureManagerTextureID, const char* texturePath);
-    void addTexture(int textureManagerTextureID, int width, int height, unsigned char* textureData);
+    void addTexture(int textureManagerTextureID, unsigned int width, unsigned int height, unsigned char* textureData);
     void addSampleTexture(int textureManagerTextureID);
 
     GLuint getGLTextureID(int textureManagerTextureID);

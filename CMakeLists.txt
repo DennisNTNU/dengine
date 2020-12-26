@@ -30,6 +30,8 @@ add_library(dengine
     src/textureManager.cpp
     src/util.cpp
     src/obj_import.c
+
+    extern/lodepng/lodepng.cpp
     )
 
-target_include_directories(dengine PUBLIC inc)
+target_include_directories(dengine PUBLIC inc extern/lodepng)
