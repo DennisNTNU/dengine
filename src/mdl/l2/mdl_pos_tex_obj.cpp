@@ -1,4 +1,4 @@
-#include "mdl/mdl_pos_tex_obj.hpp"
+#include "mdl/l2/mdl_pos_tex_obj.hpp"
 
 extern "C" {
 #include "obj_import.h"
@@ -7,6 +7,7 @@ extern "C" {
 Mdl_pos_tex_obj::Mdl_pos_tex_obj(GLuint shaderID, GLuint textureID, const char* obj_file_path)
     : Mdl_pos_tex(shaderID, textureID)
 {
+    strcpy(_name, "Mdl_pos_tex_obj");
     unsigned int* indices = nullptr;
     float* vertexPositions = nullptr;
     float* vertexUVs = nullptr;

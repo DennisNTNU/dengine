@@ -1,7 +1,7 @@
 #ifndef MDL_POS_TEX_OBJ_HPP
 #define MDL_POS_TEX_OBJ_HPP
 
-#include "mdl_pos_tex.hpp"
+#include "mdl/l1/mdl_pos_tex.hpp"
 
 #include <GL/glew.h>
 

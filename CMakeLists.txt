@@ -17,15 +17,15 @@ add_library(dengine
     src/mdl/sphereVAO.cpp
     src/mdl/texturedSphere.cpp
     src/mdl/mdl_base.cpp
-    src/mdl/mdl_pos.cpp
-    src/mdl/mdl_pos_col.cpp
-    src/mdl/mdl_pos_col_line.cpp
-    src/mdl/mdl_pos_tex.cpp
-    src/mdl/mdl_example0.cpp
-    src/mdl/mdl_example1.cpp
-    src/mdl/mdl_example2.cpp
-    src/mdl/mdl_axes_orthnorm.cpp
-    src/mdl/mdl_pos_tex_obj.cpp
+    src/mdl/l1/mdl_pos.cpp
+    src/mdl/l1/mdl_pos_col.cpp
+    src/mdl/l1/mdl_pos_col_line.cpp
+    src/mdl/l1/mdl_pos_tex.cpp
+    src/mdl/l2/mdl_axes_orthnorm.cpp
+    src/mdl/l2/mdl_example0.cpp
+    src/mdl/l2/mdl_example1.cpp
+    src/mdl/l2/mdl_example2.cpp
+    src/mdl/l2/mdl_pos_tex_obj.cpp
     src/shaderManager.cpp
     src/textureManager.cpp
     src/util.cpp

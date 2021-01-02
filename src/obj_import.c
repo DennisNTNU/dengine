@@ -27,7 +27,7 @@ struct __attribute__((packed)) Normal
 };
 
 // gets character count until and not including next newline
-static void get_line(char* str, int* line_size)
+static void get_chars_until_newline(char* str, int* line_size)
 {
     *line_size = 0;
     while (str[*line_size])
@@ -89,7 +89,7 @@ int parse_obj(char* obj_file, float** positions, float** uvs,
     {
         int line_size = 0;
         char* line = &(obj_file[str_index]);
-        get_line(line, &line_size);
+        get_chars_until_newline(line, &line_size);
         if (line_size == 0)
         {
             break;
@@ -156,7 +156,7 @@ int parse_obj(char* obj_file, float** positions, float** uvs,
     {
         int line_size = 0;
         char* line = &(obj_file[str_index]);
-        get_line(line, &line_size);
+        get_chars_until_newline(line, &line_size);
         if (line_size == 0)
         {
             break;
@@ -204,7 +204,7 @@ int parse_obj(char* obj_file, float** positions, float** uvs,
     {
         int line_size = 0;
         char* line = &(obj_file[str_index]);
-        get_line(line, &line_size);
+        get_chars_until_newline(line, &line_size);
         if (line_size == 0)
         {
             break;
@@ -327,8 +327,6 @@ int parse_obj(char* obj_file, float** positions, float** uvs,
     free(uv_s);
     free(norms);
 
-    free(obj_file);
-
     return 0;
 }
 
@@ -345,4 +343,78 @@ int importObj(const char* path, float** positions, float** uvs,
     }
 
     return parse_obj(obj_file, positions, uvs, vertex_count, indices, index_count);
+
+    free(obj_file);
+}
+
+
+
+
+
+
+
+
+void test_parse_obj()
+{
+    char test_obj_file[] = "# Blender v2.91.0 OBJ File: ''\n"
+                           "# www.blender.org\n"
+                           "o Plane\n"
+                           "v -1.000000 0.000000 1.000000\n"
+                           "v 1.000000 0.000000 1.000000\n"
+                           "v -1.000000 0.000000 -1.000000\n"
+                           "v 1.000000 0.000000 -1.000000\n"
+                           "vt 1.000000 0.000000\n"
+                           "vt 0.000000 1.000000\n"
+                           "vt 0.000000 0.000000\n"
+                           "vt 1.000000 1.000000\n"
+                           "vn 0.0000 1.0000 0.0000\n"
+                           "s off\n"
+                           "f 2/1/1 3/2/1 1/3/1\n"
+                           "f 2/1/1 4/4/1 3/2/1\n";
+
+    char* correct_v_output[] = {"1.000000 0.000000 1.000000",
+                                "-1.000000 0.000000 -1.000000",
+                                "-1.000000 0.000000 1.000000",
+                                "1.000000 0.000000 1.000000",
+                                "1.000000 0.000000 -1.000000",
+                                "-1.000000 0.000000 -1.000000"};
+    char* correct_vt_output[] = {"1.000000 0.000000",
+                                 "0.000000 1.000000",
+                                 "0.000000 0.000000",
+                                 "1.000000 0.000000",
+                                 "1.000000 1.000000",
+                                 "0.000000 1.000000"};
+
+
+    unsigned int* indices = NULL;
+    float* vertexPositions = NULL;
+    float* vertexUVs = NULL;
+    int vertexCount = 0;
+    int indexCount = 0;
+
+    //initData(&indices, &vertexPositions, &vertexUVs, &vertexCount);
+    int ret = parse_obj(test_obj_file, &vertexPositions, &vertexUVs, &vertexCount, &indices, &indexCount);
+
+    for (int i = 0; i < vertexCount; i++)
+    {
+        printf("\nv%i |%f %f %f\n", i, vertexPositions[3*i + 0]
+                                     , vertexPositions[3*i + 1]
+                                     , vertexPositions[3*i + 2]);
+        if (i < 6)
+        {
+            printf("   |%s\n", correct_v_output[i]);
+        }
+    }
+    printf("If the line pairs above match, parsing of positions went ok\n");
+
+    for (int i = 0; i < vertexCount; i++)
+    {
+        printf("\nv%i |%f %f\n", i, vertexUVs[2*i + 0]
+                                  , vertexUVs[2*i + 1]);
+        if (i < 6)
+        {
+            printf("   |%s\n", correct_vt_output[i]);
+        }
+    }
+    printf("If the line pairs above match, parsing of uvs went ok\n\n");
 }

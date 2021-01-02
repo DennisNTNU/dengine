@@ -9,4 +9,6 @@
 int importObj(const char* path, float** positions, float** uvs,
               int* vertex_count, unsigned int** indices, unsigned int* index_count);
 
+void test_parse_obj();
+
 #endif /* OBJ_IMPORT_H */

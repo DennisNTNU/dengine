@@ -1,4 +1,4 @@
-#include "mdl/mdl_pos_col_line.hpp"
+#include "mdl/l1/mdl_pos_col_line.hpp"
 
 #include "util.hpp"
 
@@ -21,6 +21,8 @@ Mdl_pos_col_line::~Mdl_pos_col_line()
 
 void Mdl_pos_col_line::_initVAO(unsigned int* indices, float* vertexPositions, float* vertexColors, int vertexCount)
 {
+    compute_bounding_box(vertexPositions, vertexCount);
+
     if (_vaoID != 0)
     {
         glDeleteVertexArrays(1, &_vaoID);

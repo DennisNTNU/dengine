@@ -1,8 +1,9 @@
-#include "mdl/mdl_example2.hpp"
+#include "mdl/l2/mdl_example2.hpp"
 
 Mdl_example2::Mdl_example2(GLuint shaderID)
     : Mdl_pos_col(shaderID)
 {
+    strcpy(_name, "Mdl_example2");
     unsigned int* indices = nullptr;
     float* vertexPositions = nullptr;
     float* vertexColors = nullptr;

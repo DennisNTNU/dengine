@@ -1,7 +1,7 @@
 #ifndef MDL_EXAMPLE2_HPP
 #define MDL_EXAMPLE2_HPP
 
-#include "mdl_pos_col.hpp"
+#include "mdl/l1/mdl_pos_col.hpp"
 
 #include <GL/glew.h>
 

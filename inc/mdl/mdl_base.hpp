@@ -2,6 +2,18 @@
 
 #include <glm/glm.hpp>
 
+struct Bounding_box
+{
+    double xmin;
+    double xmax;
+
+    double ymin;
+    double ymax;
+
+    double zmin;
+    double zmax;
+};
+
 /**
  * Inheritence setup: Top level -> mid level -> bottom level
  * Top level defines ID and abstract draw and init functions.
@@ -22,20 +34,25 @@
  * See one of the examples.
  */
 
+#define CLASS_GET_NAME
+
 class Mdl_base
 {
 public:
-	Mdl_base();
-	~Mdl_base();
+    Mdl_base();
+    ~Mdl_base();
 
-	int whoami() {return _id;}
+    int whoami() {return _id;}
 
-	void translate(float x, float y, float z);
+    void translate(float x, float y, float z);
+    void compute_bounding_box(float* vertexPositions, int vertexCount);
 
-	virtual void draw(float* view, float* persp, void* otherdata) = 0;
+    virtual void draw(float* view, float* persp, void* otherdata) = 0;
 protected:
-	int _id;
+    int _id;
+    char _name[128];
     glm::mat4 _model;
+    struct Bounding_box b_box;
 };
 
 

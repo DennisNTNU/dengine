@@ -5,11 +5,11 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "mdl/mdl_example0.hpp"
-#include "mdl/mdl_example1.hpp"
-#include "mdl/mdl_example2.hpp"
-#include "mdl/mdl_axes_orthnorm.hpp"
-#include "mdl/mdl_pos_tex_obj.hpp"
+#include "mdl/l2/mdl_axes_orthnorm.hpp"
+#include "mdl/l2/mdl_example0.hpp"
+#include "mdl/l2/mdl_example1.hpp"
+#include "mdl/l2/mdl_example2.hpp"
+#include "mdl/l2/mdl_pos_tex_obj.hpp"
 #include "util.hpp"
 
 Dengine::Dengine()
@@ -92,12 +92,17 @@ void Dengine::addModel(const char* model, int shaderID, int texID)
     }
 }
 
-
-int Dengine::addModel(int shaderID, int texID, const char* objModelPath)
+void Dengine::addModel(int shaderID, int texID, const char* objModelPath)
 {
     Mdl_pos_tex_obj* obj = new Mdl_pos_tex_obj(shaderID, texID, objModelPath);
     _models.push_back(obj);
+}
 
+void Dengine::addModel(int shaderID, const char* objModelPath)
+{
+    // class to be made
+    //Mdl_pos_tex_obj* obj = new Mdl_pos_obj(shaderID, texID, objModelPath);
+    //_models.push_back(obj);
 }
 
 
