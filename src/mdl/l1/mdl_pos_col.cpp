@@ -39,11 +39,11 @@ void Mdl_pos_col::_initVAO(unsigned int* indices, float* vertexPositions, float*
 
     glBindBuffer(GL_ARRAY_BUFFER, vboIDs[1]);
     glBufferData(GL_ARRAY_BUFFER, 3 * vertexCount*sizeof(float), vertexPositions, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
     glBindBuffer(GL_ARRAY_BUFFER, vboIDs[2]);
     glBufferData(GL_ARRAY_BUFFER, 4 * vertexCount*sizeof(float), vertexColors, GL_STATIC_DRAW);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, 0);
 
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);

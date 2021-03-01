@@ -34,7 +34,7 @@ void Dengine::loop()
         else
         {
             // only need this usleep if vync is off
-            //usleep(int((targetFrameTime - dt)*1000000));
+            usleep(int((targetFrameTime - dt)*1000000));
         }
     }
 }
@@ -57,6 +57,11 @@ void Dengine::_draw()
     for (int i = 0; i < _models.size(); i++)
     {
         _models[i]->draw(_cam.getViewMatrix_pf(), _cam.getPerspMatrix_pf(), NULL);
+        
+        if (_shaderIDbbox != 0)
+        {
+            _models[i]->draw_bbox(_shaderIDbbox, _cam.getViewMatrix_pf(), _cam.getPerspMatrix_pf());
+        }
     }
 
     _w->display();

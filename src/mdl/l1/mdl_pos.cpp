@@ -32,14 +32,14 @@ void Mdl_pos::_initVAO(unsigned int* indices, float* vertexPositions, int vertex
     glBindVertexArray(_vaoID);
 
     unsigned int vboIDs[2];
-    glGenBuffers(2, vboIDs); // indices, positions
+    glGenBuffers(2, vboIDs); // indices, positions (color defined in shader)
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboIDs[0]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indexCount*sizeof(unsigned int), indices, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, vboIDs[1]);
     glBufferData(GL_ARRAY_BUFFER, 3 * vertexCount*sizeof(float), vertexPositions, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glEnableVertexAttribArray(0);
 }
 

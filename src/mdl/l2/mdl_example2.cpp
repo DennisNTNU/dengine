@@ -1,9 +1,11 @@
 #include "mdl/l2/mdl_example2.hpp"
 
+#include <cstring>
+
 Mdl_example2::Mdl_example2(GLuint shaderID)
     : Mdl_pos_col(shaderID)
 {
-    strcpy(_name, "Mdl_example2");
+    strncpy(_name, "Mdl_example2", 127);
     unsigned int* indices = nullptr;
     float* vertexPositions = nullptr;
     float* vertexColors = nullptr;
@@ -26,6 +28,7 @@ Mdl_example2::~Mdl_example2()
 
 void Mdl_example2::initData(unsigned int** indices, float** vertexPositions, float** vertexColors, int* vertexCount)
 {
+    // the two triangle example
     *vertexCount = 6;
     int triangleCount = 2;
     _indexCount = 3 * triangleCount;

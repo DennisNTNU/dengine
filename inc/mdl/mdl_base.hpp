@@ -1,9 +1,10 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <GL/glew.h>
 
 struct Bounding_box
-{
+{/*
     double xmin;
     double xmax;
 
@@ -11,7 +12,15 @@ struct Bounding_box
     double ymax;
 
     double zmin;
-    double zmax;
+    double zmax;*/
+    float xmin;
+    float xmax;
+
+    float ymin;
+    float ymax;
+
+    float zmin;
+    float zmax;
 };
 
 /**
@@ -34,8 +43,6 @@ struct Bounding_box
  * See one of the examples.
  */
 
-#define CLASS_GET_NAME
-
 class Mdl_base
 {
 public:
@@ -48,11 +55,14 @@ public:
     void compute_bounding_box(float* vertexPositions, int vertexCount);
 
     virtual void draw(float* view, float* persp, void* otherdata) = 0;
+    void draw_bbox(GLuint shaderIDbbox, float* view, float* persp);
 protected:
     int _id;
     char _name[128];
     glm::mat4 _model;
+
     struct Bounding_box b_box;
+    GLuint _vaoIDbbox;
 };
 
 

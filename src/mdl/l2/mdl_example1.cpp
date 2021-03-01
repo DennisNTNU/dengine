@@ -1,9 +1,11 @@
 #include "mdl/l2/mdl_example1.hpp"
 
+#include <cstring>
+
 Mdl_example1::Mdl_example1(GLuint shaderID)
     : Mdl_pos_col_line(shaderID)
 {
-    strcpy(_name, "Mdl_example1");
+    strncpy(_name, "Mdl_example1", 127);
     unsigned int* indices = nullptr;
     float* vertexPositions = nullptr;
     float* vertexColors = nullptr;
@@ -26,6 +28,7 @@ Mdl_example1::~Mdl_example1()
 
 void Mdl_example1::initData(unsigned int** indices, float** vertexPositions, float** vertexColors, int* vertexCount)
 {
+    // lines mesh example
     *vertexCount = 6;
     _indexCount = 2 * (*vertexCount);
 

@@ -1,9 +1,11 @@
 #include "mdl/l2/mdl_axes_orthnorm.hpp"
 
+#include <cstring>
+
 Mdl_axes_orthnorm::Mdl_axes_orthnorm(GLuint shaderID)
     : Mdl_pos_col_line(shaderID)
 {
-    strcpy(_name, "Mdl_axes_orthnorm");
+    strncpy(_name, "Mdl_axes_orthnorm", 127);
     unsigned int* indices = nullptr;
     float* vertexPositions = nullptr;
     float* vertexColors = nullptr;

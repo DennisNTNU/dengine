@@ -1,9 +1,11 @@
 #include "mdl/l2/mdl_example0.hpp"
 
+#include <cstring>
+
 Mdl_example0::Mdl_example0(GLuint shaderID, GLuint textureID)
     : Mdl_pos_tex(shaderID, textureID)
 {
-    strcpy(_name, "Mdl_example0");
+    strncpy(_name, "Mdl_example0", 127);
     unsigned int* indices = nullptr;
     float* vertexPositions = nullptr;
     float* vertexUVs = nullptr;
@@ -26,6 +28,7 @@ Mdl_example0::~Mdl_example0()
 
 void Mdl_example0::initData(unsigned int** indices, float** vertexPositions, float** vertexUVs, int* vertexCount)
 {
+    // the 6 pyramid mesh
     *vertexCount = 30;
     int triangleCount = 24;
     _indexCount = 3 * triangleCount;

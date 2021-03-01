@@ -73,7 +73,7 @@ static int read_text_file(const char* path, char** file_buffer)
     return 0;
 }
 
-int parse_obj(char* obj_file, float** positions, float** uvs,
+int parse_obj(char* obj_file, float** positions, float** uvs, float** normals,
               int* vertex_count, unsigned int** indices, unsigned int* index_count)
 {
     int v_s = 0;
@@ -122,7 +122,7 @@ int parse_obj(char* obj_file, float** positions, float** uvs,
 
     printf("v's: %i, vt's: %i, vn's: %i, f's: %i\nvcount: %i\n", v_s, vt_s, vn_s, f_s, *vertex_count);
 
-    // allocating buffers
+    // allocating buffers output buffers
     *indices = malloc(sizeof(int)*(*index_count));
     *positions = malloc(sizeof(struct Position)*(*vertex_count));
     if (vt_s > 0)
@@ -132,7 +132,7 @@ int parse_obj(char* obj_file, float** positions, float** uvs,
     else
     {
         *uvs = NULL;
-    }/*
+    }
     if (vn_s > 0)
     {
         *normals = malloc(sizeof(struct Normal)*(*vertex_count));
@@ -140,14 +140,14 @@ int parse_obj(char* obj_file, float** positions, float** uvs,
     else
     {
         *normals = 0;
-    }*/
+    }
     
-
+    // allocating input buffers
     struct Position* poses = malloc(sizeof(struct Position)*v_s);
     struct Uv* uv_s = malloc(sizeof(struct Position)*vt_s);
     struct Normal* norms = malloc(sizeof(struct Normal)*vn_s);
 
-    // reading model data: v's, vt's and vn's.
+    // reading model data: v's, vt's and vn's, into input buffers
     int v_index = 0;
     int vt_index = 0;
     int vn_index = 0;
@@ -198,7 +198,7 @@ int parse_obj(char* obj_file, float** positions, float** uvs,
         str_index += line_size;
     }
 
-    // parsing face indices
+    // parsing face indices, copying input buffers into output buffers
     int vertex_index = 0;
     while (1)
     {
@@ -223,8 +223,8 @@ int parse_obj(char* obj_file, float** positions, float** uvs,
                        &(poses[face_indices[0]-1]), sizeof(struct Position));
                 memcpy(&((*uvs)[vertex_index*sizeof(struct Uv)/sizeof(float)]),
                        &(uv_s[face_indices[1]-1]), sizeof(struct Uv));
-            //    memcpy((*normals)[vertex_index*sizeof(struct Normal)/sizeof(float)], 
-            //           &(norms[face_indices[2]-1]), sizeof(struct Normal));
+                memcpy(&(*normals)[vertex_index*sizeof(struct Normal)/sizeof(float)], 
+                       &(norms[face_indices[2]-1]), sizeof(struct Normal));
                 (*indices)[vertex_index] = vertex_index;
 
 /*
@@ -239,8 +239,8 @@ int parse_obj(char* obj_file, float** positions, float** uvs,
                        &(poses[face_indices[3]-1]), sizeof(struct Position));
                 memcpy(&((*uvs)[vertex_index*sizeof(struct Uv)/sizeof(float)]),
                        &(uv_s[face_indices[4]-1]), sizeof(struct Uv));
-            //    memcpy((*normals)[vertex_index*sizeof(struct Normal)/sizeof(float)], 
-            //           &(norms[face_indices[5]-1]), sizeof(struct Normal));
+                memcpy(&(*normals)[vertex_index*sizeof(struct Normal)/sizeof(float)], 
+                       &(norms[face_indices[5]-1]), sizeof(struct Normal));
                 (*indices)[vertex_index] = vertex_index;
 
 /*
@@ -255,8 +255,8 @@ int parse_obj(char* obj_file, float** positions, float** uvs,
                        &(poses[face_indices[6]-1]), sizeof(struct Position));
                 memcpy(&((*uvs)[vertex_index*sizeof(struct Uv)/sizeof(float)]),
                        &(uv_s[face_indices[7]-1]), sizeof(struct Uv));
-            //    memcpy((*normals)[vertex_index*sizeof(struct Normal)/sizeof(float)], 
-            //           &(norms[face_indices[8]-1]), sizeof(struct Normal));
+                memcpy(&(*normals)[vertex_index*sizeof(struct Normal)/sizeof(float)], 
+                       &(norms[face_indices[8]-1]), sizeof(struct Normal));
                 (*indices)[vertex_index] = vertex_index;
 
 /*
@@ -332,7 +332,7 @@ int parse_obj(char* obj_file, float** positions, float** uvs,
 
 
 
-int importObj(const char* path, float** positions, float** uvs,
+int importObj(const char* path, float** positions, float** uvs, float** normals,
               int* vertex_count, unsigned int** indices, unsigned int* index_count)
 {
     char* obj_file = NULL;
@@ -342,9 +342,11 @@ int importObj(const char* path, float** positions, float** uvs,
         return ret;
     }
 
-    return parse_obj(obj_file, positions, uvs, vertex_count, indices, index_count);
+    ret = parse_obj(obj_file, positions, uvs, normals, vertex_count, indices, index_count);
 
     free(obj_file);
+
+    return ret;
 }
 
 
@@ -389,11 +391,12 @@ void test_parse_obj()
     unsigned int* indices = NULL;
     float* vertexPositions = NULL;
     float* vertexUVs = NULL;
+    float* vertexNormals = NULL;
     int vertexCount = 0;
     int indexCount = 0;
 
     //initData(&indices, &vertexPositions, &vertexUVs, &vertexCount);
-    int ret = parse_obj(test_obj_file, &vertexPositions, &vertexUVs, &vertexCount, &indices, &indexCount);
+    int ret = parse_obj(test_obj_file, &vertexPositions, &vertexUVs, &vertexNormals, &vertexCount, &indices, &indexCount);
 
     for (int i = 0; i < vertexCount; i++)
     {

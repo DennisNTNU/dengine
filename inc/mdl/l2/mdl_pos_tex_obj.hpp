@@ -8,11 +8,11 @@
 class Mdl_pos_tex_obj : public Mdl_pos_tex
 {
 public:
-	Mdl_pos_tex_obj(GLuint shaderID, GLuint textureID, const char* obj_file_path);
-	~Mdl_pos_tex_obj();
+    Mdl_pos_tex_obj(GLuint shaderID, GLuint textureID, const char* obj_file_path);
+    ~Mdl_pos_tex_obj();
 
 protected:
-	void initData(unsigned int** indices, float** vertexPositions, float** vertexUVs, int* vertexCount);
+    void initData(unsigned int** indices, float** vertexPositions, float** vertexUVs, int* vertexCount);
 
 private:
 };

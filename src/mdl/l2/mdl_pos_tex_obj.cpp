@@ -1,5 +1,7 @@
 #include "mdl/l2/mdl_pos_tex_obj.hpp"
 
+#include <cstring>
+
 extern "C" {
 #include "obj_import.h"
 }
@@ -7,14 +9,15 @@ extern "C" {
 Mdl_pos_tex_obj::Mdl_pos_tex_obj(GLuint shaderID, GLuint textureID, const char* obj_file_path)
     : Mdl_pos_tex(shaderID, textureID)
 {
-    strcpy(_name, "Mdl_pos_tex_obj");
+    strncpy(_name, "Mdl_pos_tex_obj", 127);
     unsigned int* indices = nullptr;
     float* vertexPositions = nullptr;
     float* vertexUVs = nullptr;
+    float* vertexNormals = nullptr;
     int vertexCount = 0;
 
     //initData(&indices, &vertexPositions, &vertexUVs, &vertexCount);
-    int ret = importObj(obj_file_path, &vertexPositions, &vertexUVs, &vertexCount, &indices, &_indexCount);
+    int ret = importObj(obj_file_path, &vertexPositions, &vertexUVs, &vertexNormals, &vertexCount, &indices, &_indexCount);
 
     if (ret == 0)
     {
@@ -22,6 +25,7 @@ Mdl_pos_tex_obj::Mdl_pos_tex_obj(GLuint shaderID, GLuint textureID, const char* 
         delete[] indices;
         delete[] vertexPositions;
         delete[] vertexUVs;
+        delete[] vertexNormals;
     }
 }
 
@@ -30,7 +34,7 @@ Mdl_pos_tex_obj::~Mdl_pos_tex_obj()
 
 }
 
-
+/*
 void Mdl_pos_tex_obj::initData(unsigned int** indices, float** vertexPositions, float** vertexUVs, int* vertexCount)
 {
     *vertexCount = 30;
@@ -158,10 +162,5 @@ void Mdl_pos_tex_obj::initData(unsigned int** indices, float** vertexPositions, 
         (*indices)[vc + 2 + 60] = (*indices)[vc + 2] + 25;
     }
 
-/*
-    for (int i = 0; i < *vertexCount; i++)
-    {
-        (*vertexUVs)[2*i + 0] = 0.0f;
-        (*vertexUVs)[2*i + 1] = 0.0f;
-    }*/
 }
+*/

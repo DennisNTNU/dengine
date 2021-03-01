@@ -21,12 +21,14 @@ public:
 
     int init(int argc, char** argv);
 
-    void addModel(const char* model, int shaderID, int texID);
-    void addModel(int shaderID, int texID, const char* objModelPath);
-    void addModel(int shaderID, const char* objModelPath);
+    void addModel(const char* model, GLuint shaderID, GLuint texID);
+    void addModel(GLuint shaderID, GLuint texID, const char* objModelPath);
+    void addModel(GLuint shaderID, const char* objModelPath);
     int addModel(float* positions, float* uvs, int vertex_count, int* indices, int index_count);
 
     void translateLastAddedModel(float x, float y, float z);
+
+    void registerBboxShader(GLuint shaderID);
 
     void loop();
 
@@ -57,6 +59,8 @@ private:
     int _width;
     int _height;
     Camera _cam;
+
+    GLuint _shaderIDbbox;
 
     struct timeval tv;
     struct timeval tv_prev;

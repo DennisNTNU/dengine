@@ -17,6 +17,7 @@ Dengine::Dengine()
     , _hasWindowFocus(true)
     , _width(1280)
     , _height(720)
+    , _shaderIDbbox(0)
     , dt(0.016666)
     , targetFrameTime(0.016666) // 60fps -> 16.66ms
 {
@@ -56,7 +57,7 @@ int Dengine::addModel(float* positions, float* uvs, int vertex_count, int* indic
 }
 */
 
-void Dengine::addModel(const char* model, int shaderID, int texID)
+void Dengine::addModel(const char* model, GLuint shaderID, GLuint texID)
 {
     if (strcmp(model, "mdl_axes_orthnorm") == 0)
     {
@@ -92,17 +93,23 @@ void Dengine::addModel(const char* model, int shaderID, int texID)
     }
 }
 
-void Dengine::addModel(int shaderID, int texID, const char* objModelPath)
+void Dengine::addModel(GLuint shaderID, GLuint texID, const char* objModelPath)
 {
     Mdl_pos_tex_obj* obj = new Mdl_pos_tex_obj(shaderID, texID, objModelPath);
     _models.push_back(obj);
 }
 
-void Dengine::addModel(int shaderID, const char* objModelPath)
+void Dengine::addModel(GLuint shaderID, const char* objModelPath)
 {
     // class to be made
     //Mdl_pos_tex_obj* obj = new Mdl_pos_obj(shaderID, texID, objModelPath);
     //_models.push_back(obj);
+}
+
+
+void Dengine::registerBboxShader(GLuint shaderID)
+{
+    _shaderIDbbox = shaderID;
 }
 
 
@@ -140,6 +147,8 @@ int Dengine::_initWindow()
 
     _w->setActive(true);
     _w->setMouseCursorGrabbed(true);
+
+        void registerBboxShader(GLuint shaderID);    void registerBboxShader(GLuint shaderID);    void registerBboxShader(GLuint shaderID);    void registerBboxShader(GLuint shaderID);
     _w->setMouseCursorVisible(false);
     _w->setVerticalSyncEnabled(true);
 
