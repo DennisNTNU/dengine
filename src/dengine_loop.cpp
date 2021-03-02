@@ -34,6 +34,7 @@ void Dengine::loop()
         else
         {
             // only need this usleep if vync is off
+            // or use it anyway, else there will be 100% cpu core utilization
             usleep(int((targetFrameTime - dt)*1000000));
         }
     }
@@ -58,7 +59,8 @@ void Dengine::_draw()
     {
         _models[i]->draw(_cam.getViewMatrix_pf(), _cam.getPerspMatrix_pf(), NULL);
         
-        if (_shaderIDbbox != 0)
+        //if (_shaderIDbbox != 0)
+        if (false)
         {
             _models[i]->draw_bbox(_shaderIDbbox, _cam.getViewMatrix_pf(), _cam.getPerspMatrix_pf());
         }

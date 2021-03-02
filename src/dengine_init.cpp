@@ -10,6 +10,7 @@
 #include "mdl/l2/mdl_example1.hpp"
 #include "mdl/l2/mdl_example2.hpp"
 #include "mdl/l2/mdl_pos_tex_obj.hpp"
+#include "mdl/l2/mdl_pos_tex_norm_obj.hpp"
 #include "util.hpp"
 
 Dengine::Dengine()
@@ -96,6 +97,12 @@ void Dengine::addModel(const char* model, GLuint shaderID, GLuint texID)
 void Dengine::addModel(GLuint shaderID, GLuint texID, const char* objModelPath)
 {
     Mdl_pos_tex_obj* obj = new Mdl_pos_tex_obj(shaderID, texID, objModelPath);
+    _models.push_back(obj);
+}
+
+void Dengine::addModel_normals(GLuint shaderID, GLuint texID, const char* objModelPath)
+{
+    Mdl_pos_tex_norm_obj* obj = new Mdl_pos_tex_norm_obj(shaderID, texID, objModelPath);
     _models.push_back(obj);
 }
 

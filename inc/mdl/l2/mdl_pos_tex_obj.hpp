@@ -12,7 +12,7 @@ public:
     ~Mdl_pos_tex_obj();
 
 protected:
-    void initData(unsigned int** indices, float** vertexPositions, float** vertexUVs, int* vertexCount);
+    //void initData(unsigned int** indices, float** vertexPositions, float** vertexUVs, int* vertexCount);
 
 private:
 };

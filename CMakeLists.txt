@@ -21,11 +21,13 @@ add_library(dengine
     src/mdl/l1/mdl_pos_col.cpp
     src/mdl/l1/mdl_pos_col_line.cpp
     src/mdl/l1/mdl_pos_tex.cpp
+    src/mdl/l1/mdl_pos_tex_norm.cpp
     src/mdl/l2/mdl_axes_orthnorm.cpp
     src/mdl/l2/mdl_example0.cpp
     src/mdl/l2/mdl_example1.cpp
     src/mdl/l2/mdl_example2.cpp
     src/mdl/l2/mdl_pos_tex_obj.cpp
+    src/mdl/l2/mdl_pos_tex_norm_obj.cpp
     src/shaderManager.cpp
     src/textureManager.cpp
     src/util.cpp

@@ -23,6 +23,7 @@ public:
 
     void addModel(const char* model, GLuint shaderID, GLuint texID);
     void addModel(GLuint shaderID, GLuint texID, const char* objModelPath);
+    void addModel_normals(GLuint shaderID, GLuint texID, const char* objModelPath);
     void addModel(GLuint shaderID, const char* objModelPath);
     int addModel(float* positions, float* uvs, int vertex_count, int* indices, int index_count);
 
