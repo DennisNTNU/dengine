@@ -15,8 +15,8 @@ public:
 
 	void draw(float* view, float* persp, void* otherdata);
 protected:
-	//virtual void initData(unsigned int** indices, float** vertexPositions, float** vertexUVs, int* vertexCount) = 0;
 	void _initVAO(unsigned int* indices, float* vertexPositions, float* vertexUVs, int vertexCount);
+	//virtual void initData(unsigned int** indices, float** vertexPositions, float** vertexUVs, int* vertexCount) = 0;
     unsigned int _indexCount;
 private:
 

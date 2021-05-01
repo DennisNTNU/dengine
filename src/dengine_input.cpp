@@ -9,12 +9,16 @@ bool Dengine::_handleSFMLEvents()
 {
     if (_hasWindowFocus)
     {
-        // get mouse pos relative to window
-        sf::Vector2i mousePos = sf::Mouse::getPosition(*_w);
-        // register mouse position
-        im.registerMousePos(mousePos.x, mousePos.y);
-        // reset mouse position
-        sf::Mouse::setPosition(sf::Vector2i(_width/2, _height/2), *_w);
+        // if this flag is NOT set
+        if (!(_initFlags & DGN_NOT_GRAB_MOUSE))
+        {
+            // get mouse pos relative to window
+            sf::Vector2i mousePos = sf::Mouse::getPosition(*_w);
+            // register mouse position
+            im.registerMousePos(mousePos.x, mousePos.y);
+            // reset mouse position
+            sf::Mouse::setPosition(sf::Vector2i(_width/2, _height/2), *_w);
+        }
     }
 
     sf::Event e;
@@ -32,17 +36,27 @@ bool Dengine::_handleSFMLEvents()
         {
             glViewport(0, 0, e.size.width, e.size.height);
             float newAspectRatio = float(e.size.width) / float(e.size.height);
-
             _cam.setAspect(newAspectRatio);
 
             printf("Resize Event: (%i, %i)\n", e.size.width, e.size.height);
             break;
         }
         case sf::Event::GainedFocus:
-            printf("Gained Window Focus Event\n");
+            printf("Gained Window Focus Event");
             _hasWindowFocus = true;
-            _w->setMouseCursorGrabbed(true);
-            _w->setMouseCursorVisible(false);
+
+            // if these flags are NOT set
+            if (!(_initFlags & DGN_NOT_GRAB_MOUSE))
+            {
+                printf(" Grabbing");
+                _w->setMouseCursorGrabbed(true);
+            }
+            if (!(_initFlags & DGN_NOT_HIDE_MOUSE))
+            {
+                printf("and hiding mouse\n");
+                _w->setMouseCursorVisible(false);
+            }
+            printf("\n");
             break;
         case sf::Event::LostFocus:
             printf("Lost Window Focus Event\n");
@@ -126,58 +140,48 @@ bool Dengine::_handleInput()
     if (_handleSFMLEvents()) // true, if window should close
         return true;
 
-    // e.g. update camera orientation and position
+
+
+    // CAMERA CONTROLS
+
     int dx = 0, dy = 0;
     im.getMouseMove(&dx, &dy);
 
     //_cam.pitching(-dy*glm::sqrt(glm::sqrt(dt))*0.02f);
     //_cam.yawing(-dx*glm::sqrt(glm::sqrt(dt))*0.02f);
-
     _cam.addAngVelLocal(-dy*0.01f, 0.0f, 0.0f);
     _cam.addAngVelLocal(0.0f, -dx*0.01f, 0.0f);
 
-
-    float speed = 2.0f * dt;
+    float linear_speed = 0.2f;// * dt; // delta time is taken into account inside the camera class
     if (im.isKeyDownSFML(sf::Keyboard::Key::LShift))
-        speed *= 10.0f;
+        linear_speed *= 10.0f;
 
     if (im.isKeyDownSFML(sf::Keyboard::Key::A))
-        //_cam.changePositionLocal(-speed, 0.0f, 0.0f);
-        _cam.addVelLocal(-speed, 0.0f, 0.0f);
+        //_cam.changePositionLocal(-linear_speed, 0.0f, 0.0f);
+        _cam.addVelLocal(-linear_speed, 0.0f, 0.0f);
 
     if (im.isKeyDownSFML(sf::Keyboard::Key::D))
-        //_cam.changePositionLocal(speed, 0.0f, 0.0f);
-        _cam.addVelLocal(speed, 0.0f, 0.0f);
+        //_cam.changePositionLocal(linear_speed, 0.0f, 0.0f);
+        _cam.addVelLocal(linear_speed, 0.0f, 0.0f);
 
     if (im.isKeyDownSFML(sf::Keyboard::Key::W))
-        //_cam.changePositionLocal(0.0f, 0.0f, -speed);
-        _cam.addVelLocal(0.0f, 0.0f, -speed);
+        //_cam.changePositionLocal(0.0f, 0.0f, -linear_speed);
+        _cam.addVelLocal(0.0f, 0.0f, -linear_speed);
 
     if (im.isKeyDownSFML(sf::Keyboard::Key::S))
-        //_cam.changePositionLocal(0.0f, 0.0f, speed);
-        _cam.addVelLocal(0.0f, 0.0f, speed);
+        //_cam.changePositionLocal(0.0f, 0.0f, linear_speed);
+        _cam.addVelLocal(0.0f, 0.0f, linear_speed);
 
 
     if (im.isKeyDownSFML(sf::Keyboard::Key::R))
-        //_cam.changePositionLocal(0.0f, speed, 0.0f);
-        _cam.addVelLocal(0.0f, speed, 0.0f);
+        //_cam.changePositionLocal(0.0f, linear_speed, 0.0f);
+        _cam.addVelLocal(0.0f, linear_speed, 0.0f);
 
     if (im.isKeyDownSFML(sf::Keyboard::Key::F))
-        //_cam.changePositionLocal(0.0f, -speed, 0.0f);
-        _cam.addVelLocal(0.0f, -speed, 0.0f);
+        //_cam.changePositionLocal(0.0f, -linear_speed, 0.0f);
+        _cam.addVelLocal(0.0f, -linear_speed, 0.0f);
 
-
-    if (im.isKeyDownSFML(sf::Keyboard::Key::Num1))
-        targetFrameTime = 0.016666;
-
-    if (im.isKeyDownSFML(sf::Keyboard::Key::Num2))
-        targetFrameTime = 0.033333;
-
-    if (im.isKeyDownSFML(sf::Keyboard::Key::Num3))
-        targetFrameTime = 0.066666;
-
-
-/*
+#if 0
     float speed2 = 0.5f * dt;
     if (im.isKeyDownSFML(sf::Keyboard::Key::U))
         _cam.changePositionLocal(speed2, 0.0f, 0.0f);
@@ -189,8 +193,8 @@ bool Dengine::_handleInput()
         _cam.changePositionLocal(0.0f, 0.0f, speed2);
 
     if (im.isKeyDownSFML(sf::Keyboard::Key::K))
-        _cam.changePositionLocal(0.0f, 0.0f, -speed2);*/
-
+        _cam.changePositionLocal(0.0f, 0.0f, -speed2);
+#endif
 
     if (im.isKeyDownSFML(sf::Keyboard::Key::Q))
     {
@@ -206,5 +210,23 @@ bool Dengine::_handleInput()
         _cam.setOrientation(0.0f, 0.0f, 0.0f, 1.0f);
 
 
+    // CAMERA CONTROLS END
+
+
+
+
+
+    if (im.isKeyDownSFML(sf::Keyboard::Key::Num1))
+        targetFrameTime = 0.016666;
+
+    if (im.isKeyDownSFML(sf::Keyboard::Key::Num2))
+        targetFrameTime = 0.033333;
+
+    if (im.isKeyDownSFML(sf::Keyboard::Key::Num3))
+        targetFrameTime = 0.066666;
+
+
+
     return 0;
 }
+

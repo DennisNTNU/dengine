@@ -13,23 +13,28 @@
 #include "camera.hpp"
 #include "mdl/mdl_base.hpp"
 
+#define DGN_2D 1
+#define DGN_NOT_GRAB_MOUSE 2
+#define DGN_NOT_HIDE_MOUSE 4
+#define DGN_RESIZABLE 8
+
 class Dengine
 {
 public:
     Dengine();
     ~Dengine();
 
-    int init(int argc, char** argv);
+    int init(int argc, char** argv, int flags);
 
-    void addModel(const char* model, GLuint shaderID, GLuint texID);
-    void addModel(GLuint shaderID, GLuint texID, const char* objModelPath);
-    void addModel_normals(GLuint shaderID, GLuint texID, const char* objModelPath);
-    void addModel(GLuint shaderID, const char* objModelPath);
-    int addModel(float* positions, float* uvs, int vertex_count, int* indices, int index_count);
+    void addModel(int whichShadID, int whichTexID, float* positions, float* uvs, int vertex_count, unsigned int* indices, int index_count);
+    void addModel(const char* model_str, int whichShadID, int whichTexID);
+    void addModel(int whichShadID, int whichTexID, const char* objModelPath);
+    void addModel_normals(int whichShadID, int whichTexID, const char* objModelPath);
+    void addModel(int whichShadID, const char* objModelPath);
 
     void translateLastAddedModel(float x, float y, float z);
 
-    void registerBboxShader(GLuint shaderID);
+    void registerBboxShader(int whichShadID);
 
     void loop();
 
@@ -56,6 +61,7 @@ private:
     void _glClear();
 
     sf::Window* _w;
+    int _initFlags;
     bool _hasWindowFocus;
     int _width;
     int _height;

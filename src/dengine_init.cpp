@@ -9,12 +9,14 @@
 #include "mdl/l2/mdl_example0.hpp"
 #include "mdl/l2/mdl_example1.hpp"
 #include "mdl/l2/mdl_example2.hpp"
+#include "mdl/l2/mdl_pos_tex_data.hpp"
 #include "mdl/l2/mdl_pos_tex_obj.hpp"
 #include "mdl/l2/mdl_pos_tex_norm_obj.hpp"
 #include "util.hpp"
 
 Dengine::Dengine()
     : _w(nullptr)
+    , _initFlags(0)
     , _hasWindowFocus(true)
     , _width(1280)
     , _height(720)
@@ -41,89 +43,16 @@ Dengine::~Dengine()
 }
 
 
-int Dengine::init(int argc, char** argv)
+int Dengine::init(int argc, char** argv, int flags)
 {
+    _initFlags = flags;
     if (_initWindow()) return 1;
     if (_initGlew()) return 1;
     _initGLParams();
 
     return 0;
 }
-/*
-int Dengine::addModel(float* positions, float* uvs, int vertex_count, int* indices, int index_count)
-{
-    //mdl0
-    //_models.push_back(mdl0);
-    return 0;
-}
-*/
 
-void Dengine::addModel(const char* model, GLuint shaderID, GLuint texID)
-{
-    if (strcmp(model, "mdl_axes_orthnorm") == 0)
-    {
-        if (shaderID != 0)
-        {
-            Mdl_axes_orthnorm* axes = new Mdl_axes_orthnorm(shaderID);
-            _models.push_back(axes);
-        }
-    }
-    else if (strcmp(model, "mdl_example0") == 0)
-    {
-        if (shaderID != 0 && texID != 0)
-        {
-            Mdl_example0* mdl0 = new Mdl_example0(shaderID, texID);
-            _models.push_back(mdl0);
-        }
-    }
-    else if (strcmp(model, "mdl_example1") == 0)
-    {
-        if (shaderID != 0)
-        {
-            Mdl_example1* mdl1 = new Mdl_example1(shaderID);
-            _models.push_back(mdl1);
-        }
-    }
-    else if (strcmp(model, "mdl_example2") == 0)
-    {
-        if (shaderID != 0)
-        {
-            Mdl_example2* mdl2 = new Mdl_example2(shaderID);
-            _models.push_back(mdl2);
-        }
-    }
-}
-
-void Dengine::addModel(GLuint shaderID, GLuint texID, const char* objModelPath)
-{
-    Mdl_pos_tex_obj* obj = new Mdl_pos_tex_obj(shaderID, texID, objModelPath);
-    _models.push_back(obj);
-}
-
-void Dengine::addModel_normals(GLuint shaderID, GLuint texID, const char* objModelPath)
-{
-    Mdl_pos_tex_norm_obj* obj = new Mdl_pos_tex_norm_obj(shaderID, texID, objModelPath);
-    _models.push_back(obj);
-}
-
-void Dengine::addModel(GLuint shaderID, const char* objModelPath)
-{
-    // class to be made
-    //Mdl_pos_tex_obj* obj = new Mdl_pos_obj(shaderID, texID, objModelPath);
-    //_models.push_back(obj);
-}
-
-
-void Dengine::registerBboxShader(GLuint shaderID)
-{
-    _shaderIDbbox = shaderID;
-}
-
-
-void Dengine::translateLastAddedModel(float x, float y, float z)
-{
-    _models.back()->translate(x, y, z);
-}
 
 int Dengine::_initWindow()
 {
@@ -136,7 +65,14 @@ int Dengine::_initWindow()
     settings.minorVersion = 3;
     settings.attributeFlags = sf::ContextSettings::Attribute::Core;
 
-    _w = new sf::Window(sf::VideoMode(_width, _height), "Does it Work!?", sf::Style::Titlebar, settings);
+    int sfml_window_style = sf::Style::Titlebar;
+    if (_initFlags & DGN_RESIZABLE)
+    {
+        printf("Resizable window?\n");
+        sfml_window_style = sf::Style::Default;
+    }
+
+    _w = new sf::Window(sf::VideoMode(_width, _height), "Does it Work!?", sfml_window_style, settings);
     
     sf::Vector2u sz = _w->getSize();
     float aspectRatio = float(sz.x) / float(sz.y);
@@ -153,10 +89,28 @@ int Dengine::_initWindow()
     }
 
     _w->setActive(true);
-    _w->setMouseCursorGrabbed(true);
 
-        void registerBboxShader(GLuint shaderID);    void registerBboxShader(GLuint shaderID);    void registerBboxShader(GLuint shaderID);    void registerBboxShader(GLuint shaderID);
-    _w->setMouseCursorVisible(false);
+    if (_initFlags & DGN_NOT_GRAB_MOUSE)
+    {
+        _w->setMouseCursorGrabbed(false);
+    }
+    else
+    {
+        printf("Grabbing mouse\n");
+        _w->setMouseCursorGrabbed(true);
+    }
+
+    if (_initFlags & DGN_NOT_HIDE_MOUSE)
+    {
+        _w->setMouseCursorVisible(true);
+    }
+    else
+    {
+        printf("Hiding mouse\n");
+        _w->setMouseCursorVisible(false);
+    }
+
+
     _w->setVerticalSyncEnabled(true);
 
     return 0;
@@ -215,3 +169,70 @@ void Dengine::_initGLParams(void)
     // face culling
     //glEnable(GL_CULL_FACE);
 }
+
+
+
+void Dengine::addModel(int whichShadID, int whichTexID, float* positions, float* uvs,
+                      int vertex_count, unsigned int* indices, int index_count)
+{
+    Mdl_pos_tex_data* mdl = new Mdl_pos_tex_data(sm.getProgramID(whichShadID), tm.getGLTextureID(whichTexID), positions, uvs, vertex_count, indices, index_count);
+    _models.push_back(mdl);
+}
+
+
+void Dengine::addModel(const char* model_str, int whichShadID, int whichTexID)
+{
+    if (strcmp(model_str, "mdl_axes_orthnorm") == 0)
+    {
+        Mdl_axes_orthnorm* axes = new Mdl_axes_orthnorm(sm.getProgramID(whichShadID));
+        _models.push_back(axes);
+    }
+    else if (strcmp(model_str, "mdl_example0") == 0)
+    {
+        Mdl_example0* mdl0 = new Mdl_example0(sm.getProgramID(whichShadID), tm.getGLTextureID(whichTexID));
+        _models.push_back(mdl0);
+    }
+    else if (strcmp(model_str, "mdl_example1") == 0)
+    {
+        Mdl_example1* mdl1 = new Mdl_example1(sm.getProgramID(whichShadID));
+        _models.push_back(mdl1);
+    }
+    else if (strcmp(model_str, "mdl_example2") == 0)
+    {
+        Mdl_example2* mdl2 = new Mdl_example2(sm.getProgramID(whichShadID));
+        _models.push_back(mdl2);
+    }
+}
+
+void Dengine::addModel(int whichShadID, int whichTexID, const char* objModelPath)
+{
+    Mdl_pos_tex_obj* obj = new Mdl_pos_tex_obj(sm.getProgramID(whichShadID), tm.getGLTextureID(whichTexID), objModelPath);
+    _models.push_back(obj);
+}
+
+void Dengine::addModel_normals(int whichShadID, int whichTexID, const char* objModelPath)
+{
+    Mdl_pos_tex_norm_obj* obj = new Mdl_pos_tex_norm_obj(sm.getProgramID(whichShadID), tm.getGLTextureID(whichTexID), objModelPath);
+    _models.push_back(obj);
+}
+
+void Dengine::addModel(int whichShadID, const char* objModelPath)
+{
+    // class to be made
+    //Mdl_pos_tex_obj* obj = new Mdl_pos_obj(sm.getProgramID(whichShadID), tm.getGLTextureID(whichTexID), objModelPath);
+    //_models.push_back(obj);
+    printf("%s not implemented yet\n", __func__);
+}
+
+
+void Dengine::registerBboxShader(int whichShadID)
+{
+    _shaderIDbbox = sm.getProgramID(whichShadID);
+}
+
+
+void Dengine::translateLastAddedModel(float x, float y, float z)
+{
+    _models.back()->translate(x, y, z);
+}
+

@@ -55,9 +55,18 @@ void Dengine::_draw()
 {
     _glClear(); checkGLError(__FILE__, __LINE__);
 
+    glm::mat4 identity = glm::mat4(1.0f);
+
     for (int i = 0; i < _models.size(); i++)
     {
-        _models[i]->draw(_cam.getViewMatrix_pf(), _cam.getPerspMatrix_pf(), NULL);
+        if (_initFlags & DGN_2D)
+        {
+            _models[i]->draw(&(identity[0][0]), &(identity[0][0]), NULL);
+        }
+        else
+        {
+            _models[i]->draw(_cam.getViewMatrix_pf(), _cam.getPerspMatrix_pf(), NULL);
+        }
         
         //if (_shaderIDbbox != 0)
         if (false)
