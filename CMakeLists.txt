@@ -26,6 +26,7 @@ add_library(dengine
     src/mdl/l2/mdl_example0.cpp
     src/mdl/l2/mdl_example1.cpp
     src/mdl/l2/mdl_example2.cpp
+    src/mdl/l2/mdl_pos_tex_data.cpp
     src/mdl/l2/mdl_pos_tex_obj.cpp
     src/mdl/l2/mdl_pos_tex_norm_obj.cpp
     src/shaderManager.cpp
