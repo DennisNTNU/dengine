@@ -31,10 +31,10 @@ void TextureManager::addTexture(int textureManagerTextureID, const char* texture
         printf("Reading image error %u: %s\nTexture %i not added\n", error, lodepng_error_text(error), textureManagerTextureID);
         return;
     }
-    addTexture(textureManagerTextureID, width, height, image);
+    addTexture(textureManagerTextureID, width, height, image, TM_RGBA8);
 }
 
-void TextureManager::addTexture(int textureManagerTextureID, unsigned int width, unsigned int height, unsigned char* textureData)
+void TextureManager::addTexture(int textureManagerTextureID, unsigned int width, unsigned int height, unsigned char* textureData, int texFormat)
 {
     if (textureManagerTextureID >= TEXTUREMANAGER_MAX_TEXTURES)
     {
@@ -66,7 +66,18 @@ void TextureManager::addTexture(int textureManagerTextureID, unsigned int width,
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     checkGLError(__FILE__, __LINE__);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
+    switch (texFormat)
+    {
+    case TM_RGBA8:
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
+        break;
+    case TM_MONO16:
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_R16, width, height, 0, GL_RED, GL_UNSIGNED_SHORT, textureData);
+        break;
+    case TM_MONO8:
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, textureData);
+        break;
+    }
     checkGLError(__FILE__, __LINE__);
 
     glGenerateMipmap(GL_TEXTURE_2D);
@@ -106,7 +117,7 @@ void TextureManager::addSampleTexture(int textureManagerTextureID)
         }
     }
 
-    addTexture(textureManagerTextureID, wdth, hght, texData);
+    addTexture(textureManagerTextureID, wdth, hght, texData, TM_RGBA8);
 
     delete[] texData;
 }
