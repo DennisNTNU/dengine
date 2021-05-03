@@ -1,16 +1,36 @@
 #include "mdl/l1/mdl_pos_tex_norm.hpp"
 
+#include <cstring>
+
 #include "util.hpp"
 
-Mdl_pos_tex_norm::Mdl_pos_tex_norm(GLuint shaderID, GLuint textureID)
+Mdl_pos_tex_norm::Mdl_pos_tex_norm(GLuint shaderID, GLuint textureID, GLenum primitive)
     : _indexCount(0)
     , _vaoID(0)
     , _textureID(0)
     , _shaderID(0)
 {
-	_id = 1;
+    strncpy(_name, "Mdl_pos_tex_norm uninitialized", 127);
+    _id = 1;
     _shaderID = shaderID;
     _textureID = textureID;
+    _primitive = primitive;
+}
+
+Mdl_pos_tex_norm::Mdl_pos_tex_norm(GLuint shaderID, GLuint textureID, GLenum primitive, float* vertexPositions, float* vertexUVs, float* vertexNormals, int vertexCount, unsigned int* indices, int indexCount)
+    : _indexCount(0)
+    , _vaoID(0)
+    , _textureID(0)
+    , _shaderID(0)
+{
+    strncpy(_name, "Mdl_pos_tex_norm", 127);
+    _id = 1;
+    _shaderID = shaderID;
+    _textureID = textureID;
+    _primitive = primitive;
+
+    _indexCount = indexCount;
+    _initVAO(vertexPositions, vertexUVs, vertexNormals, vertexCount, indices);
 }
 
 Mdl_pos_tex_norm::~Mdl_pos_tex_norm()
@@ -21,7 +41,7 @@ Mdl_pos_tex_norm::~Mdl_pos_tex_norm()
     }
 }
 
-void Mdl_pos_tex_norm::_initVAO(unsigned int* indices, float* vertexPositions, float* vertexUVs, float* vertexNormals, int vertexCount)
+void Mdl_pos_tex_norm::_initVAO(float* vertexPositions, float* vertexUVs, float* vertexNormals, int vertexCount, unsigned int* indices)
 {
     compute_bounding_box(vertexPositions, vertexCount);
 

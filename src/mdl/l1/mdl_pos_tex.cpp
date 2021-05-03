@@ -1,16 +1,36 @@
 #include "mdl/l1/mdl_pos_tex.hpp"
 
+#include <cstring>
+
 #include "util.hpp"
 
-Mdl_pos_tex::Mdl_pos_tex(GLuint shaderID, GLuint textureID)
+Mdl_pos_tex::Mdl_pos_tex(GLuint shaderID, GLuint textureID, GLenum primitive)
     : _indexCount(0)
     , _vaoID(0)
     , _textureID(0)
     , _shaderID(0)
 {
+    strncpy(_name, "Mdl_pos_tex uninitialized", 127);
 	_id = 1;
     _shaderID = shaderID;
     _textureID = textureID;
+    _primitive = primitive;
+}
+
+Mdl_pos_tex::Mdl_pos_tex(GLuint shaderID, GLuint textureID, GLenum primitive, float* vertexPositions, float* vertexUVs, int vertexCount, unsigned int* indices, int indexCount)
+    : _indexCount(0)
+    , _vaoID(0)
+    , _textureID(0)
+    , _shaderID(0)
+{
+    strncpy(_name, "Mdl_pos_tex", 127);
+    _id = 1;
+    _shaderID = shaderID;
+    _textureID = textureID;
+    _primitive = primitive;
+
+    _indexCount = indexCount;
+    _initVAO(vertexPositions, vertexUVs, vertexCount, indices);
 }
 
 Mdl_pos_tex::~Mdl_pos_tex()
@@ -21,7 +41,7 @@ Mdl_pos_tex::~Mdl_pos_tex()
     }
 }
 
-void Mdl_pos_tex::_initVAO(unsigned int* indices, float* vertexPositions, float* vertexUVs, int vertexCount)
+void Mdl_pos_tex::_initVAO(float* vertexPositions, float* vertexUVs, int vertexCount, unsigned int* indices)
 {
     compute_bounding_box(vertexPositions, vertexCount);
 
@@ -77,7 +97,7 @@ void Mdl_pos_tex::draw(float* view, float* persp, void* otherdata)
     checkGLError(__FILE__, __LINE__);
 
 
-    glDrawElements(GL_TRIANGLES, _indexCount, GL_UNSIGNED_INT, 0);
+    glDrawElements(_primitive, _indexCount, GL_UNSIGNED_INT, 0);
     checkGLError(__FILE__, __LINE__);
 
     glBindVertexArray(0);

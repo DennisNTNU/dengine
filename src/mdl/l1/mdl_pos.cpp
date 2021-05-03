@@ -1,14 +1,32 @@
 #include "mdl/l1/mdl_pos.hpp"
 
+#include <cstring>
+
 #include "util.hpp"
 
-Mdl_pos::Mdl_pos(GLuint shaderID)
+Mdl_pos::Mdl_pos(GLuint shaderID, GLenum primitive)
     : _indexCount(0)
     , _vaoID(0)
     , _shaderID(0)
 {
+    strncpy(_name, "Mdl_pos uninitialized", 127);
 	_id = 2;
     _shaderID = shaderID;
+    _primitive = primitive;
+}
+
+Mdl_pos::Mdl_pos(GLuint shaderID, GLenum primitive, float* vertexPositions, int vertexCount, unsigned int* indices, int indexCount)
+    : _indexCount(0)
+    , _vaoID(0)
+    , _shaderID(0)
+{
+    strncpy(_name, "Mdl_pos", 127);
+    _id = 2;
+    _shaderID = shaderID;
+    _primitive = primitive;
+
+    _indexCount = indexCount;
+    _initVAO(vertexPositions, vertexCount, indices);
 }
 
 Mdl_pos::~Mdl_pos()
@@ -19,7 +37,7 @@ Mdl_pos::~Mdl_pos()
     }
 }
 
-void Mdl_pos::_initVAO(unsigned int* indices, float* vertexPositions, int vertexCount)
+void Mdl_pos::_initVAO(float* vertexPositions, int vertexCount, unsigned int* indices)
 {
     compute_bounding_box(vertexPositions, vertexCount);
 
@@ -58,7 +76,7 @@ void Mdl_pos::draw(float* view, float* persp, void* otherdata)
     glUniformMatrix4fv(glGetUniformLocation(_shaderID, "perspMatrix"), 1, GL_FALSE, persp);
     checkGLError(__FILE__, __LINE__);
 
-    glDrawElements(GL_TRIANGLES, _indexCount, GL_UNSIGNED_INT, 0);
+    glDrawElements(_primitive, _indexCount, GL_UNSIGNED_INT, 0);
     checkGLError(__FILE__, __LINE__);
 
     glBindVertexArray(0);
