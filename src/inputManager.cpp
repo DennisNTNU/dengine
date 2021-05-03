@@ -78,6 +78,8 @@ void InputManager::update()
 {
     memcpy(_keyDownArrayPrevSFML, _keyDownArraySFML, 256);
 
+    memcpy(_mouseBtnDownArrayPrevSFML, _mouseBtnDownArraySFML, 5);
+
 //    _mouseLeftPrev = _mouseLeft;
 //    _mouseRightPrev = _mouseRight;
 }
@@ -120,14 +122,6 @@ int InputManager::wasKeyPressedSFML(unsigned char keycode)
     {
         return 0;
     }
-}
-
-void InputManager::getMouseMove(int* dx, int* dy)
-{
-    *dx = _mouse_dx_move;
-    *dy = _mouse_dy_move;
-    _mouse_dx_move = 0;
-    _mouse_dy_move = 0;
 }
 
 int InputManager::isKeyDown(unsigned char asciiKey)
@@ -176,8 +170,74 @@ void InputManager::registerMousePos(int x, int y)
     }
 }
 
+
+void InputManager::registerMousePress(int button, int x, int y)
+{
+    _mouseBtnDownArraySFML[button] = true;
+    if (button == 0)
+    {
+        _mouseLeftPressX = x;
+        _mouseLeftPressY = y;
+    }
+}
+
+void InputManager::registerMouseRelease(int button, int x, int y)
+{
+    _mouseBtnDownArraySFML[button] = false;
+    if (button == 0)
+    {
+        _mouseLeftReleaseX = x;
+        _mouseLeftReleaseY = y;
+    }
+}
+
+
 void InputManager::setMouseCenterCoords(int x, int y)
 {
     _mouseX_center = x;
     _mouseY_center = y;
+}
+
+void InputManager::getMouseMove(int* dx, int* dy)
+{
+    *dx = _mouse_dx_move;
+    *dy = _mouse_dy_move;
+    _mouse_dx_move = 0;
+    _mouse_dy_move = 0;
+}
+
+int InputManager::wasMouseReleasedSFML(int button, int* x, int* y)
+{
+
+    if (!_mouseBtnDownArraySFML[button] && _mouseBtnDownArrayPrevSFML[button])
+    {
+        if (x != NULL)
+        {
+            *x = _mouseLeftReleaseX;
+        }
+
+        if (y != NULL)
+        {
+            *y = _mouseLeftReleaseY;
+        }
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+
+
+int InputManager::wasMousePressedSFML(int button, int* x, int* y)
+{
+    if (_mouseBtnDownArraySFML[button] && !_mouseBtnDownArrayPrevSFML[button])
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }

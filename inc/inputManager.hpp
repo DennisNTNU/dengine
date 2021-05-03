@@ -20,7 +20,6 @@ public:
     // get input
     int isKeyDownSFML(unsigned char keycode);
     int wasKeyPressedSFML(unsigned char keycode);
-    void getMouseMove(int* dx, int* dy);
 
 
     int isKeyDown(unsigned char ascii);
@@ -28,8 +27,15 @@ public:
     // register mouse input events
     void registerMouseJustEntered(void);
     void registerMousePos(int x, int y);
+    void registerMousePress(int button, int x, int y);
+    void registerMouseRelease(int button, int x, int y);
 
     void setMouseCenterCoords(int x, int y);
+
+    void getMouseMove(int* dx, int* dy);
+
+    int wasMouseReleasedSFML(int button, int* x, int* y);
+    int wasMousePressedSFML(int button, int* x, int* y);
 
     //void registerMouseBtnLeft(unsigned char pressed);
     //void registerMouseBtnRight(unsigned char pressed);
@@ -37,6 +43,16 @@ public:
 private:
     bool _keyDownArraySFML[256];
     bool _keyDownArrayPrevSFML[256];
+
+
+    bool _mouseBtnDownArraySFML[5];
+    bool _mouseBtnDownArrayPrevSFML[5];
+
+    int _mouseLeftPressX;
+    int _mouseLeftPressY;
+
+    int _mouseLeftReleaseX;
+    int _mouseLeftReleaseY;
 
     int _mouseX;
     int _mouseY;
