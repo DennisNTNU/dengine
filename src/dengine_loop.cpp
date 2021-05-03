@@ -7,7 +7,7 @@
 
 
 
-void Dengine::loop()
+void Dengine::loop(void (*callback)(void* data), void* data)
 {
     int i = 0;
     while (_w->isOpen())
@@ -22,11 +22,13 @@ void Dengine::loop()
             if (_handleInput()) // true, if window should close
                 break;
 
+            callback(data);
+
             _updateScene(dt);
 
             _draw();
 
-            if ( (i++ % 30) == 0)
+            if ( (i++ % 60) == 0)
             {
                 printf("%s: Frame time: %f ms\n", __FUNCTION__, 1000.0*dt);
             }

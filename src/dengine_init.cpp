@@ -5,11 +5,11 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "mdl/l1/mdl_pos_tex.hpp"
 #include "mdl/l2/mdl_axes_orthnorm.hpp"
 #include "mdl/l2/mdl_example0.hpp"
 #include "mdl/l2/mdl_example1.hpp"
 #include "mdl/l2/mdl_example2.hpp"
-#include "mdl/l2/mdl_pos_tex_data.hpp"
 #include "mdl/l2/mdl_pos_tex_obj.hpp"
 #include "mdl/l2/mdl_pos_tex_norm_obj.hpp"
 #include "util.hpp"
@@ -171,63 +171,72 @@ void Dengine::_initGLParams(void)
 }
 
 
-
-void Dengine::addModel(int whichShadID, int whichTexID, float* positions, float* uvs,
+// textured mesh (triangles)
+void Dengine::addModel(int smShaderID, int tmTextureID, float* positions, float* uvs,
                       int vertex_count, unsigned int* indices, int index_count)
 {
-    Mdl_pos_tex_data* mdl = new Mdl_pos_tex_data(sm.getProgramID(whichShadID), tm.getGLTextureID(whichTexID), positions, uvs, vertex_count, indices, index_count);
+    Mdl_pos_tex* mdl = new Mdl_pos_tex(sm.getProgramID(smShaderID), tm.getGLTextureID(tmTextureID), GL_TRIANGLES, positions, uvs, vertex_count, indices, index_count);
     _models.push_back(mdl);
 }
 
 
-void Dengine::addModel(const char* model_str, int whichShadID, int whichTexID)
+// line strip
+void Dengine::addModel_linestrip(int smShaderID, float* positions, float* colors, int vertex_count, unsigned int* indices, int index_count)
+{
+    Mdl_pos_col* mdl = new Mdl_pos_col(sm.getProgramID(smShaderID), GL_LINE_STRIP, positions, colors, vertex_count, indices, index_count);
+    _models.push_back(mdl);
+}
+
+
+void Dengine::addModel(const char* model_str, int smShaderID, int tmTextureID)
 {
     if (strcmp(model_str, "mdl_axes_orthnorm") == 0)
     {
-        Mdl_axes_orthnorm* axes = new Mdl_axes_orthnorm(sm.getProgramID(whichShadID));
+        Mdl_axes_orthnorm* axes = new Mdl_axes_orthnorm(sm.getProgramID(smShaderID));
         _models.push_back(axes);
     }
     else if (strcmp(model_str, "mdl_example0") == 0)
     {
-        Mdl_example0* mdl0 = new Mdl_example0(sm.getProgramID(whichShadID), tm.getGLTextureID(whichTexID));
+        Mdl_example0* mdl0 = new Mdl_example0(sm.getProgramID(smShaderID), tm.getGLTextureID(tmTextureID));
         _models.push_back(mdl0);
     }
     else if (strcmp(model_str, "mdl_example1") == 0)
     {
-        Mdl_example1* mdl1 = new Mdl_example1(sm.getProgramID(whichShadID));
+        Mdl_example1* mdl1 = new Mdl_example1(sm.getProgramID(smShaderID));
         _models.push_back(mdl1);
     }
     else if (strcmp(model_str, "mdl_example2") == 0)
     {
-        Mdl_example2* mdl2 = new Mdl_example2(sm.getProgramID(whichShadID));
+        Mdl_example2* mdl2 = new Mdl_example2(sm.getProgramID(smShaderID));
         _models.push_back(mdl2);
     }
 }
 
-void Dengine::addModel(int whichShadID, int whichTexID, const char* objModelPath)
+void Dengine::addModel(int smShaderID, int tmTextureID, const char* objModelPath)
 {
-    Mdl_pos_tex_obj* obj = new Mdl_pos_tex_obj(sm.getProgramID(whichShadID), tm.getGLTextureID(whichTexID), objModelPath);
+    Mdl_pos_tex_obj* obj = new Mdl_pos_tex_obj(sm.getProgramID(smShaderID), tm.getGLTextureID(tmTextureID), objModelPath);
     _models.push_back(obj);
 }
 
-void Dengine::addModel_normals(int whichShadID, int whichTexID, const char* objModelPath)
+void Dengine::addModel_normals(int smShaderID, int tmTextureID, const char* objModelPath)
 {
-    Mdl_pos_tex_norm_obj* obj = new Mdl_pos_tex_norm_obj(sm.getProgramID(whichShadID), tm.getGLTextureID(whichTexID), objModelPath);
+    Mdl_pos_tex_norm_obj* obj = new Mdl_pos_tex_norm_obj(sm.getProgramID(smShaderID), tm.getGLTextureID(tmTextureID), objModelPath);
     _models.push_back(obj);
 }
 
-void Dengine::addModel(int whichShadID, const char* objModelPath)
+void Dengine::addModel(int smShaderID, const char* objModelPath)
 {
+    // obj without tex or normals, just positions
     // class to be made
-    //Mdl_pos_tex_obj* obj = new Mdl_pos_obj(sm.getProgramID(whichShadID), tm.getGLTextureID(whichTexID), objModelPath);
+    //Mdl_pos_tex_obj* obj = new Mdl_pos_obj(sm.getProgramID(smShaderID), tm.getGLTextureID(tmTextureID), objModelPath);
     //_models.push_back(obj);
     printf("%s not implemented yet\n", __func__);
 }
 
 
-void Dengine::registerBboxShader(int whichShadID)
+void Dengine::registerBboxShader(int smShaderID)
 {
-    _shaderIDbbox = sm.getProgramID(whichShadID);
+    _shaderIDbbox = sm.getProgramID(smShaderID);
 }
 
 

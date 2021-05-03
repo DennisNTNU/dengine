@@ -26,17 +26,28 @@ public:
 
     int init(int argc, char** argv, int flags);
 
-    void addModel(int whichShadID, int whichTexID, float* positions, float* uvs, int vertex_count, unsigned int* indices, int index_count);
-    void addModel(const char* model_str, int whichShadID, int whichTexID);
-    void addModel(int whichShadID, int whichTexID, const char* objModelPath);
-    void addModel_normals(int whichShadID, int whichTexID, const char* objModelPath);
-    void addModel(int whichShadID, const char* objModelPath);
+    void addModel(int smShaderID, int tmTextureID, float* positions, float* uvs, int vertex_count, unsigned int* indices, int index_count);
+
+    void addModel(const char* model_str, int smShaderID, int tmTextureID);
+
+    void addModel(int smShaderID, const char* objModelPath);
+    void addModel(int smShaderID, int tmTextureID, const char* objModelPath);
+    void addModel_normals(int smShaderID, int tmTextureID, const char* objModelPath);
+
+    void addModel_linestrip(int smShaderID, float* positions, float* colors, int vertex_count, unsigned int* indices, int index_count);
 
     void translateLastAddedModel(float x, float y, float z);
 
-    void registerBboxShader(int whichShadID);
+    void registerBboxShader(int smShaderID);
 
-    void loop();
+    void loop(void (*callback)(void* data), void* data);
+
+    void getWindowDims(int* x, int* y)
+    {
+        sf::Vector2u sz = _w->getSize();
+        *x = sz.x;
+        *y = sz.y;
+    }
 
     std::vector<Mdl_base*> _models;
 

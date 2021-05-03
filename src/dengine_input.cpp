@@ -9,13 +9,14 @@ bool Dengine::_handleSFMLEvents()
 {
     if (_hasWindowFocus)
     {
+        // get mouse pos relative to window
+        sf::Vector2i mousePos = sf::Mouse::getPosition(*_w);
+        // register mouse position
+        im.registerMousePos(mousePos.x, mousePos.y);
+
         // if this flag is NOT set
         if (!(_initFlags & DGN_NOT_GRAB_MOUSE))
         {
-            // get mouse pos relative to window
-            sf::Vector2i mousePos = sf::Mouse::getPosition(*_w);
-            // register mouse position
-            im.registerMousePos(mousePos.x, mousePos.y);
             // reset mouse position
             sf::Mouse::setPosition(sf::Vector2i(_width/2, _height/2), *_w);
         }
@@ -85,10 +86,12 @@ bool Dengine::_handleSFMLEvents()
             printf("Mouse Scroll Event\n");
             break;
         case sf::Event::MouseButtonPressed:
-            printf("Mouse Button Press Event\n");
+            printf("Mouse Button Press Event %i\n", e.mouseButton.button);
+            im.registerMousePress(e.mouseButton.button, e.mouseButton.x, e.mouseButton.y);
             break;
         case sf::Event::MouseButtonReleased:
-            printf("Mouse Button Release Event\n");
+            printf("Mouse Button Release Event %i\n", e.mouseButton.button);
+            im.registerMouseRelease(e.mouseButton.button, e.mouseButton.x, e.mouseButton.y);
             break;
         case sf::Event::MouseMoved:
             //printf("Mouse Move Event: (%i, %i)\n", e.mouseMove.x, e.mouseMove.y);
