@@ -12,7 +12,7 @@ public:
 	~Mdl_example0();
 
 protected:
-	void initData(unsigned int** indices, float** vertexPositions, float** vertexUVs, int* vertexCount);
+	void initData(float** vertexPositions, float** vertexUVs, int* vertexCount, unsigned int** indices);
 
 private:
 };

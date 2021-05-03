@@ -7,21 +7,22 @@ extern "C" {
 }
 
 Mdl_pos_tex_norm_obj::Mdl_pos_tex_norm_obj(GLuint shaderID, GLuint textureID, const char* obj_file_path)
-    : Mdl_pos_tex_norm(shaderID, textureID)
+    : Mdl_pos_tex_norm(shaderID, textureID, GL_TRIANGLES)
 {
     strncpy(_name, "Mdl_pos_tex_norm_obj", 127);
-    unsigned int* indices = nullptr;
+
     float* vertexPositions = nullptr;
     float* vertexUVs = nullptr;
     float* vertexNormals = nullptr;
     int vertexCount = 0;
+    unsigned int* indices = nullptr;
 
     //initData(&indices, &vertexPositions, &vertexUVs, &vertexCount);
     int ret = importObj(obj_file_path, &vertexPositions, &vertexUVs, &vertexNormals, &vertexCount, &indices, &_indexCount);
 
     if (ret == 0)
     {
-        _initVAO(indices, vertexPositions, vertexUVs, vertexNormals, vertexCount);
+        _initVAO(vertexPositions, vertexUVs, vertexNormals, vertexCount, indices);
         delete[] indices;
         delete[] vertexPositions;
         delete[] vertexUVs;

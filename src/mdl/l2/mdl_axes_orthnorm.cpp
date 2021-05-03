@@ -3,7 +3,7 @@
 #include <cstring>
 
 Mdl_axes_orthnorm::Mdl_axes_orthnorm(GLuint shaderID)
-    : Mdl_pos_col_line(shaderID)
+    : Mdl_pos_col(shaderID, GL_LINES)
 {
     strncpy(_name, "Mdl_axes_orthnorm", 127);
     unsigned int* indices = nullptr;
@@ -11,9 +11,9 @@ Mdl_axes_orthnorm::Mdl_axes_orthnorm(GLuint shaderID)
     float* vertexColors = nullptr;
     int vertexCount = 0;
 
-    initData(&indices, &vertexPositions, &vertexColors, &vertexCount);
+    initData(&vertexPositions, &vertexColors, &vertexCount, &indices);
 
-    _initVAO(indices, vertexPositions, vertexColors, vertexCount);
+    _initVAO(vertexPositions, vertexColors, vertexCount, indices);
 
     delete[] indices;
     delete[] vertexPositions;
@@ -26,7 +26,7 @@ Mdl_axes_orthnorm::~Mdl_axes_orthnorm()
 }
 
 
-void Mdl_axes_orthnorm::initData(unsigned int** indices, float** vertexPositions, float** vertexColors, int* vertexCount)
+void Mdl_axes_orthnorm::initData(float** vertexPositions, float** vertexColors, int* vertexCount, unsigned int** indices)
 {
     *vertexCount = 6;
     _indexCount = 6;

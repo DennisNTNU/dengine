@@ -3,17 +3,18 @@
 #include <cstring>
 
 Mdl_example1::Mdl_example1(GLuint shaderID)
-    : Mdl_pos_col_line(shaderID)
+    : Mdl_pos_col(shaderID, GL_LINES)
 {
     strncpy(_name, "Mdl_example1", 127);
+
     unsigned int* indices = nullptr;
     float* vertexPositions = nullptr;
     float* vertexColors = nullptr;
     int vertexCount = 0;
 
-    initData(&indices, &vertexPositions, &vertexColors, &vertexCount);
+    initData(&vertexPositions, &vertexColors, &vertexCount, &indices);
 
-    _initVAO(indices, vertexPositions, vertexColors, vertexCount);
+    _initVAO(vertexPositions, vertexColors, vertexCount, indices);
 
     delete[] indices;
     delete[] vertexPositions;
@@ -26,7 +27,7 @@ Mdl_example1::~Mdl_example1()
 }
 
 
-void Mdl_example1::initData(unsigned int** indices, float** vertexPositions, float** vertexColors, int* vertexCount)
+void Mdl_example1::initData(float** vertexPositions, float** vertexColors, int* vertexCount, unsigned int** indices)
 {
     // lines mesh example
     *vertexCount = 6;

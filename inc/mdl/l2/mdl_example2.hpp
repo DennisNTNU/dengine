@@ -8,11 +8,11 @@
 class Mdl_example2 : public Mdl_pos_col
 {
 public:
-	Mdl_example2(GLuint shaderID);
-	~Mdl_example2();
+    Mdl_example2(GLuint shaderID);
+    ~Mdl_example2();
 
 protected:
-	void initData(unsigned int** indices, float** vertexPositions, float** vertexColors, int* vertexCount);
+    void initData(float** vertexPositions, float** vertexColors, int* vertexCount, unsigned int** indices);
 
 private:
 };

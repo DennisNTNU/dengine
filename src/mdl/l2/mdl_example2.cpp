@@ -3,17 +3,18 @@
 #include <cstring>
 
 Mdl_example2::Mdl_example2(GLuint shaderID)
-    : Mdl_pos_col(shaderID)
+    : Mdl_pos_col(shaderID, GL_TRIANGLES)
 {
     strncpy(_name, "Mdl_example2", 127);
+
     unsigned int* indices = nullptr;
     float* vertexPositions = nullptr;
     float* vertexColors = nullptr;
     int vertexCount = 0;
 
-    initData(&indices, &vertexPositions, &vertexColors, &vertexCount);
+    initData(&vertexPositions, &vertexColors, &vertexCount, &indices);
 
-    _initVAO(indices, vertexPositions, vertexColors, vertexCount);
+    _initVAO(vertexPositions, vertexColors, vertexCount, indices);
 
     delete[] indices;
     delete[] vertexPositions;
@@ -26,7 +27,7 @@ Mdl_example2::~Mdl_example2()
 }
 
 
-void Mdl_example2::initData(unsigned int** indices, float** vertexPositions, float** vertexColors, int* vertexCount)
+void Mdl_example2::initData(float** vertexPositions, float** vertexColors, int* vertexCount, unsigned int** indices)
 {
     // the two triangle example
     *vertexCount = 6;

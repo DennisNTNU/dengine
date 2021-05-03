@@ -3,17 +3,18 @@
 #include <cstring>
 
 Mdl_example0::Mdl_example0(GLuint shaderID, GLuint textureID)
-    : Mdl_pos_tex(shaderID, textureID)
+    : Mdl_pos_tex(shaderID, textureID, GL_TRIANGLES)
 {
     strncpy(_name, "Mdl_example0", 127);
+
     unsigned int* indices = nullptr;
     float* vertexPositions = nullptr;
     float* vertexUVs = nullptr;
     int vertexCount = 0;
 
-    initData(&indices, &vertexPositions, &vertexUVs, &vertexCount);
+    initData(&vertexPositions, &vertexUVs, &vertexCount, &indices);
 
-    _initVAO(indices, vertexPositions, vertexUVs, vertexCount);
+    _initVAO(vertexPositions, vertexUVs, vertexCount, indices);
 
     delete[] indices;
     delete[] vertexPositions;
@@ -26,7 +27,7 @@ Mdl_example0::~Mdl_example0()
 }
 
 
-void Mdl_example0::initData(unsigned int** indices, float** vertexPositions, float** vertexUVs, int* vertexCount)
+void Mdl_example0::initData(float** vertexPositions, float** vertexUVs, int* vertexCount, unsigned int** indices)
 {
     // the 6 pyramid mesh
     *vertexCount = 30;
