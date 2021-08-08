@@ -17,6 +17,9 @@ public:
 
     void addTexture(int textureManagerTextureID, const char* texturePath);
     void addTexture(int textureManagerTextureID, unsigned int width, unsigned int height, unsigned char* textureData, int texFormat);
+
+    void changeTextureData(int textureManagerTextureID, unsigned int width, unsigned int height, unsigned char* textureData, int texFormat);
+
     void addSampleTexture(int textureManagerTextureID);
 
     GLuint getGLTextureID(int textureManagerTextureID);

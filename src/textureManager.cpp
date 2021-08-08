@@ -89,6 +89,44 @@ void TextureManager::addTexture(int textureManagerTextureID, unsigned int width,
     printf("Texture ID: %i\n", _textureIDs[textureManagerTextureID]);
 }
 
+
+void TextureManager::changeTextureData(int textureManagerTextureID, unsigned int width, unsigned int height, unsigned char* textureData, int texFormat)
+{
+    if (textureManagerTextureID >= TEXTUREMANAGER_MAX_TEXTURES)
+    {
+        return;
+    }
+
+    if (_textureIDs[textureManagerTextureID] == 0)
+    {
+        // do nothing if this ID does not map to a texture
+        return;
+    }
+
+    glBindTexture(GL_TEXTURE_2D, _textureIDs[textureManagerTextureID]);
+    checkGLError(__FILE__, __LINE__);
+
+    switch (texFormat)
+    {
+    case TM_RGBA8:
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
+        break;
+    case TM_MONO16:
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_R16, width, height, 0, GL_RED, GL_UNSIGNED_SHORT, textureData);
+        break;
+    case TM_MONO8:
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, textureData);
+        break;
+    }
+    checkGLError(__FILE__, __LINE__);
+
+    glGenerateMipmap(GL_TEXTURE_2D);
+    checkGLError(__FILE__, __LINE__);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    checkGLError(__FILE__, __LINE__);
+}
+
 GLuint TextureManager::getGLTextureID(int textureManagerTextureID)
 {
     if (textureManagerTextureID < TEXTUREMANAGER_MAX_TEXTURES)
