@@ -49,7 +49,7 @@ int ShaderManager::addProgramFile(int which, const char* vertexShaderPath, const
     int fd_frag = open(fragmentShaderPath, O_RDONLY);
     if (fd_frag < 0)
     {
-        printf("  ERROR Could not read fragment shader:\n  %s\n", vertexShaderPath);
+        printf("  ERROR Could not read fragment shader:\n  %s\n", fragmentShaderPath);
         return -2;
     }
 
