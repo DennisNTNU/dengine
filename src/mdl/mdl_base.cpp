@@ -31,6 +31,13 @@ void Mdl_base::translate(float x, float y, float z)
     _model[3][2] += z;
 }
 
+void Mdl_base::setPosition(float x, float y, float z)
+{
+    _model[3][0] = x;
+    _model[3][1] = y;
+    _model[3][2] = z;
+}
+
 void Mdl_base::compute_bounding_box(float* vertexPositions, int vertexCount)
 {
     b_box.xmin = FLT_MAX;
@@ -77,10 +84,10 @@ void Mdl_base::compute_bounding_box(float* vertexPositions, int vertexCount)
         }
     }
 
-    printf("%s\n", _name);
-    printf("Bounding box: x %f %f \n", b_box.xmin, b_box.xmax);
-    printf("              y %f %f \n", b_box.ymin, b_box.ymax);
-    printf("              z %f %f \n", b_box.zmin, b_box.zmax);
+    //printf("%s\n", _name);
+    //printf("Bounding box: x %f %f \n", b_box.xmin, b_box.xmax);
+    //printf("              y %f %f \n", b_box.ymin, b_box.ymax);
+    //printf("              z %f %f \n", b_box.zmin, b_box.zmax);
 
     // make bounding box buffers
     // boudning box has 24 lines, 4 for each of the 6 sides.

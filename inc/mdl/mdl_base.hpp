@@ -52,6 +52,8 @@ public:
     int whoami() {return _id;}
 
     void translate(float x, float y, float z);
+    void setPosition(float x, float y, float z);
+
     void compute_bounding_box(float* vertexPositions, int vertexCount);
 
     virtual void draw(float* view, float* persp, void* otherdata) = 0;
