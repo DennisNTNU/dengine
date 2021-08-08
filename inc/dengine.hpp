@@ -2,6 +2,7 @@
 #define LOOP_H
 
 #include <vector>
+//#include <list>
 
 #include <GL/glew.h> // for glGetError(), gluErrorString()
 #include <SFML/Window.hpp> // for sf::Window, sf::VideoMode()
@@ -26,17 +27,22 @@ public:
 
     int init(int argc, char** argv, int flags);
 
-    void addModel(int smShaderID, int tmTextureID, float* positions, float* uvs, int vertex_count, unsigned int* indices, int index_count);
+    int addModel(int smShaderID, int tmTextureID, float* positions, float* uvs, int vertex_count, unsigned int* indices, int index_count);
 
-    void addModel(const char* model_str, int smShaderID, int tmTextureID);
+    int addModel(const char* model_str, int smShaderID, int tmTextureID);
 
-    void addModel(int smShaderID, const char* objModelPath);
-    void addModel(int smShaderID, int tmTextureID, const char* objModelPath);
-    void addModel_normals(int smShaderID, int tmTextureID, const char* objModelPath);
+    int addModel(int smShaderID, const char* objModelPath);
+    int addModel(int smShaderID, int tmTextureID, const char* objModelPath);
+    int addModel_normals(int smShaderID, int tmTextureID, const char* objModelPath);
 
-    void addModel_linestrip(int smShaderID, float* positions, float* colors, int vertex_count, unsigned int* indices, int index_count);
+    int addModel_linestrip(int smShaderID, float* positions, float* colors, int vertex_count, unsigned int* indices, int index_count);
 
     void translateLastAddedModel(float x, float y, float z);
+    void translateModel(int index, float x, float y, float z);
+    void setPositionModel(int index, float x, float y, float z);
+
+    void removeLastModel();
+    void removeModelByIndex(int index);
 
     void registerBboxShader(int smShaderID);
 

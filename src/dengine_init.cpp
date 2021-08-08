@@ -80,13 +80,13 @@ int Dengine::_initWindow()
     _cam.setPersp(aspectRatio, 90.0f * 3.141592653589793238462f / 180.0f, 0.01f, 100.0f);
     _cam.setPosition(0.0f, 1.0f, 5.0f);
 
-    printWindowSettings(_w);
-
     if (!_w)
     {
         printf("Error initing window.\n");
         return -1;
     }
+
+    printWindowSettings(_w);
 
     _w->setActive(true);
 
@@ -172,23 +172,25 @@ void Dengine::_initGLParams(void)
 
 
 // textured mesh (triangles)
-void Dengine::addModel(int smShaderID, int tmTextureID, float* positions, float* uvs,
+int Dengine::addModel(int smShaderID, int tmTextureID, float* positions, float* uvs,
                       int vertex_count, unsigned int* indices, int index_count)
 {
     Mdl_pos_tex* mdl = new Mdl_pos_tex(sm.getProgramID(smShaderID), tm.getGLTextureID(tmTextureID), GL_TRIANGLES, positions, uvs, vertex_count, indices, index_count);
     _models.push_back(mdl);
+    return _models.size()-1;
 }
 
 
 // line strip
-void Dengine::addModel_linestrip(int smShaderID, float* positions, float* colors, int vertex_count, unsigned int* indices, int index_count)
+int Dengine::addModel_linestrip(int smShaderID, float* positions, float* colors, int vertex_count, unsigned int* indices, int index_count)
 {
     Mdl_pos_col* mdl = new Mdl_pos_col(sm.getProgramID(smShaderID), GL_LINE_STRIP, positions, colors, vertex_count, indices, index_count);
     _models.push_back(mdl);
+    return _models.size()-1;
 }
 
 
-void Dengine::addModel(const char* model_str, int smShaderID, int tmTextureID)
+int Dengine::addModel(const char* model_str, int smShaderID, int tmTextureID)
 {
     if (strcmp(model_str, "mdl_axes_orthnorm") == 0)
     {
@@ -210,29 +212,55 @@ void Dengine::addModel(const char* model_str, int smShaderID, int tmTextureID)
         Mdl_example2* mdl2 = new Mdl_example2(sm.getProgramID(smShaderID));
         _models.push_back(mdl2);
     }
+    return _models.size()-1;
 }
 
-void Dengine::addModel(int smShaderID, int tmTextureID, const char* objModelPath)
+int Dengine::addModel(int smShaderID, int tmTextureID, const char* objModelPath)
 {
     Mdl_pos_tex_obj* obj = new Mdl_pos_tex_obj(sm.getProgramID(smShaderID), tm.getGLTextureID(tmTextureID), objModelPath);
     _models.push_back(obj);
+    return _models.size()-1;
 }
 
-void Dengine::addModel_normals(int smShaderID, int tmTextureID, const char* objModelPath)
+int Dengine::addModel_normals(int smShaderID, int tmTextureID, const char* objModelPath)
 {
     Mdl_pos_tex_norm_obj* obj = new Mdl_pos_tex_norm_obj(sm.getProgramID(smShaderID), tm.getGLTextureID(tmTextureID), objModelPath);
     _models.push_back(obj);
+    return _models.size()-1;
 }
 
-void Dengine::addModel(int smShaderID, const char* objModelPath)
+int Dengine::addModel(int smShaderID, const char* objModelPath)
 {
     // obj without tex or normals, just positions
     // class to be made
     //Mdl_pos_tex_obj* obj = new Mdl_pos_obj(sm.getProgramID(smShaderID), tm.getGLTextureID(tmTextureID), objModelPath);
     //_models.push_back(obj);
     printf("%s not implemented yet\n", __func__);
+    return _models.size()-1;
 }
 
+
+
+void Dengine::translateLastAddedModel(float x, float y, float z)
+{
+    _models.back()->translate(x, y, z);
+}
+
+void Dengine::translateModel(int index, float x, float y, float z)
+{
+    if (index > 0 && index < _models.size())
+    {
+        _models[index]->translate(x, y, z);
+    }
+}
+
+void Dengine::setPositionModel(int index, float x, float y, float z)
+{
+    if (index > 0 && index < _models.size())
+    {
+        _models[index]->setPosition(x, y, z);
+    }
+}
 
 void Dengine::registerBboxShader(int smShaderID)
 {
@@ -240,8 +268,13 @@ void Dengine::registerBboxShader(int smShaderID)
 }
 
 
-void Dengine::translateLastAddedModel(float x, float y, float z)
+void Dengine::removeLastModel()
 {
-    _models.back()->translate(x, y, z);
+    _models.pop_back();
+}
+
+void Dengine::removeModelByIndex(int index)
+{
+    _models.erase(_models.begin()+index);
 }
 

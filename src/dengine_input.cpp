@@ -72,7 +72,10 @@ bool Dengine::_handleSFMLEvents()
             if (e.key.code == sf::Keyboard::Key::Escape)
                 return true;
             im.registerKeyPressSFML(e.key.code);
-            // printf("Key Press Event: %i\n", e.key.code);
+            //printf("Key Press Event: %i\n", e.key.code);
+            // Arrow keys: left 71 right 72 up 73 down 74
+            // left shift 38
+            // right shift 42
             break;
         case sf::Event::KeyReleased:
             im.registerKeyReleaseSFML(e.key.code);

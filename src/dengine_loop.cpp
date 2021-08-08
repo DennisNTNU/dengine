@@ -30,7 +30,7 @@ void Dengine::loop(void (*callback)(void* data), void* data)
 
             if ( (i++ % 60) == 0)
             {
-                printf("%s: Frame time: %f ms\n", __FUNCTION__, 1000.0*dt);
+                //printf("%s: Frame time: %f ms\n", __FUNCTION__, 1000.0*dt);
             }
         }
         else
