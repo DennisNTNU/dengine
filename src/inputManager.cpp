@@ -67,6 +67,8 @@ InputManager::InputManager()
     _SFMLtoASCIIMap[3] = 97;
     */
 
+    memset(_mouseBtnDownArraySFML, 0, 5);
+    memset(_mouseBtnDownArrayPrevSFML, 0, 5);
 }
 
 InputManager::~InputManager()
@@ -211,6 +213,7 @@ int InputManager::wasMouseReleasedSFML(int button, int* x, int* y)
 
     if (!_mouseBtnDownArraySFML[button] && _mouseBtnDownArrayPrevSFML[button])
     {
+        // returning x and y coordinates where mouse was released
         if (x != NULL)
         {
             *x = _mouseLeftReleaseX;
