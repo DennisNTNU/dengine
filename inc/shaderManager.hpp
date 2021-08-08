@@ -9,7 +9,9 @@ public:
     ShaderManager();
     ~ShaderManager();
 
-    void addProgram( int which, const char* vertexShaderPath, const char* fragmentShaderPath);
+    int addProgramFile(int which, const char* vertexShaderPath, const char* fragmentShaderPath);
+    int addProgramSource(int which, const char* vertexShaderSrc, const char* fragmentShaderSrc);
+
     void useProgram(int which);
     void unuseProgram(void);
 

@@ -19,15 +19,14 @@ ShaderManager::~ShaderManager()
 
 }
 
-void ShaderManager::addProgram(int which, const char* vertexShaderPath, const char* fragmentShaderPath)
+int ShaderManager::addProgramFile(int which, const char* vertexShaderPath, const char* fragmentShaderPath)
 {
-
 
     int fd_vert = open(vertexShaderPath, O_RDONLY);
     if (fd_vert < 0)
     {
-        printf("Could not read vertex shader:\n%s\n", vertexShaderPath);
-        return;
+        printf("  ERROR Could not read vertex shader:\n  %s\n", vertexShaderPath);
+        return -1;
     }
 
     struct stat statbuf;
@@ -50,8 +49,8 @@ void ShaderManager::addProgram(int which, const char* vertexShaderPath, const ch
     int fd_frag = open(fragmentShaderPath, O_RDONLY);
     if (fd_frag < 0)
     {
-        printf("Could not read fragment shader:\n%s\n", fragmentShaderPath);
-        return;
+        printf("  ERROR Could not read fragment shader:\n  %s\n", vertexShaderPath);
+        return -2;
     }
 
     fstat(fd_frag, &statbuf);
@@ -68,21 +67,39 @@ void ShaderManager::addProgram(int which, const char* vertexShaderPath, const ch
 
     close(fd_frag);
 
+    if (addProgramSource(which, vertexShader, fragmentShader))
+    {
 
+        printf("Error making shader from\n    %s\n    %s\n", vertexShaderPath, fragmentShaderPath);
+        delete[] vertexShader;
+        delete[] fragmentShader;
+        return -3;
+    }
+
+    delete[] vertexShader;
+    delete[] fragmentShader;
+
+    return 0;
+}
+
+int ShaderManager::addProgramSource(int which, const char* vertexShaderSrc, const char* fragmentShaderSrc)
+{
+    if (vertexShaderSrc == nullptr || fragmentShaderSrc == nullptr)
+    {
+        printf("Error making shader. No source\n");
+        return -1;
+    }
     
     GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
     checkGLError(__FILE__, __LINE__);
     GLuint fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
     checkGLError(__FILE__, __LINE__);
 
-    glShaderSource(vertexShaderID, 1, &vertexShader, nullptr);
+    glShaderSource(vertexShaderID, 1, &vertexShaderSrc, nullptr);
     checkGLError(__FILE__, __LINE__);
-    glShaderSource(fragmentShaderID, 1, &fragmentShader, nullptr);
+    glShaderSource(fragmentShaderID, 1, &fragmentShaderSrc, nullptr);
     checkGLError(__FILE__, __LINE__);
 
-    delete[] vertexShader;
-    delete[] fragmentShader;
-    
     GLint success = 0;
     glCompileShader(vertexShaderID);
     checkGLError(__FILE__, __LINE__);
@@ -98,7 +115,7 @@ void ShaderManager::addProgram(int which, const char* vertexShaderPath, const ch
         char* errorLog = new char[maxLength];
         glGetShaderInfoLog(vertexShaderID, maxLength, &maxLength, errorLog);
         
-        printf(" -------- Couldnt compile %s\n%s\n --------\n", vertexShaderPath, errorLog);
+        printf(" -------- Couldnt compile vertex shader\n%s\n --------\n", errorLog);
 
         // Provide the infolog in whatever manor you deem best.
         // Exit with failure.
@@ -106,7 +123,7 @@ void ShaderManager::addProgram(int which, const char* vertexShaderPath, const ch
 
         delete[] errorLog;
 
-        return;
+        return -2;
     }
     
 
@@ -124,7 +141,7 @@ void ShaderManager::addProgram(int which, const char* vertexShaderPath, const ch
         char* errorLog = new char[maxLength];
         glGetShaderInfoLog(fragmentShaderID, maxLength, &maxLength, errorLog); checkGLError(__FILE__, __LINE__);
 
-        printf(" -------- Couldnt compile %s\n%s\n --------\n", fragmentShaderPath, errorLog);
+        printf(" -------- Couldnt compile fragment shader\n%s\n --------\n", errorLog);
         
         // Provide the infolog in whatever manor you deem best.
         // Exit with failure.
@@ -133,7 +150,7 @@ void ShaderManager::addProgram(int which, const char* vertexShaderPath, const ch
 
         delete[] errorLog;
 
-        return;
+        return -3;
     }
 
 
@@ -163,7 +180,7 @@ void ShaderManager::addProgram(int which, const char* vertexShaderPath, const ch
         char* errorLog = new char[maxLength];
         glGetProgramInfoLog(_shaderProgramIDs[which], maxLength, &maxLength, errorLog);
 
-        printf(" -------- Couldnt link shader program\n%s\n%s\n%s\n --------\n", vertexShaderPath, fragmentShaderPath, errorLog);
+        printf(" -------- Couldnt link shader program\n%s\n --------\n", errorLog);
 
         // Provide the infolog in whatever manor you deem best.
         // Exit with failure.
@@ -185,7 +202,13 @@ void ShaderManager::addProgram(int which, const char* vertexShaderPath, const ch
     checkGLError(__FILE__, __LINE__);
 
     printf("Shader program ID: %i\n", _shaderProgramIDs[which]);
+
+    return 0;
 }
+
+
+
+
 
 
 void ShaderManager::useProgram(int which)
