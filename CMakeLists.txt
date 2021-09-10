@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 
 
-add_library(dengine 
+add_library(dengine
     src/camera.cpp
     src/inputManager.cpp
     src/dengine_init.cpp

@@ -15,6 +15,7 @@ public:
     void extra_function();
 
     void draw(float* view, float* persp, void* otherdata);
+    void changeTexture(GLuint textureID);
 protected:
     //virtual void initData(unsigned int** indices, float** vertexPositions, float** vertexUVs, int* vertexCount) = 0;
     void _initVAO(float* vertexPositions, float* vertexUVs, float* vertexNormals, int vertexCount, unsigned int* indices);

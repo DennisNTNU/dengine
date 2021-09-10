@@ -43,24 +43,24 @@ bool Dengine::_handleSFMLEvents()
             break;
         }
         case sf::Event::GainedFocus:
-            printf("Gained Window Focus Event");
+            //printf("Gained Window Focus Event");
             _hasWindowFocus = true;
 
             // if these flags are NOT set
             if (!(_initFlags & DGN_NOT_GRAB_MOUSE))
             {
-                printf(" Grabbing");
+                //printf(" Grabbing");
                 _w->setMouseCursorGrabbed(true);
             }
             if (!(_initFlags & DGN_NOT_HIDE_MOUSE))
             {
-                printf("and hiding mouse\n");
+                //printf("and hiding mouse\n");
                 _w->setMouseCursorVisible(false);
             }
-            printf("\n");
+            //printf("\n");
             break;
         case sf::Event::LostFocus:
-            printf("Lost Window Focus Event\n");
+            //printf("Lost Window Focus Event\n");
             _hasWindowFocus = false;
             im.reset();
             _w->setMouseCursorGrabbed(false);
@@ -86,14 +86,14 @@ bool Dengine::_handleSFMLEvents()
 
         // Mouse Events
         case sf::Event::MouseWheelScrolled:
-            printf("Mouse Scroll Event\n");
+            //printf("Mouse Scroll Event\n");
             break;
         case sf::Event::MouseButtonPressed:
-            printf("Mouse Button Press Event %i\n", e.mouseButton.button);
+            //printf("Mouse Button Press Event %i\n", e.mouseButton.button);
             im.registerMousePress(e.mouseButton.button, e.mouseButton.x, e.mouseButton.y);
             break;
         case sf::Event::MouseButtonReleased:
-            printf("Mouse Button Release Event %i\n", e.mouseButton.button);
+            //printf("Mouse Button Release Event %i\n", e.mouseButton.button);
             im.registerMouseRelease(e.mouseButton.button, e.mouseButton.x, e.mouseButton.y);
             break;
         case sf::Event::MouseMoved:
@@ -104,7 +104,7 @@ bool Dengine::_handleSFMLEvents()
             //printf("Mouse Entered Window Event\n");
             break;
         case sf::Event::MouseLeft:
-            printf("Mouse Left Window Event\n");
+            //printf("Mouse Left Window Event\n");
             break;
         case sf::Event::MouseWheelMoved:
             break;
