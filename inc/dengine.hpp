@@ -55,11 +55,14 @@ public:
         *y = sz.y;
     }
 
+    bool get_window_closed_bool(){ return _window_closed; }
+
     std::vector<Mdl_base*> _models;
 
     ShaderManager sm;
     TextureManager tm;
     InputManager im;
+protected:
 private:
     int _initWindow();
     int _initGlew();
@@ -82,6 +85,7 @@ private:
     bool _hasWindowFocus;
     int _width;
     int _height;
+    bool _window_closed;
     Camera _cam;
 
     GLuint _shaderIDbbox;

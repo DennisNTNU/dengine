@@ -19,8 +19,11 @@ void Dengine::loop(void (*callback)(void* data), void* data)
         {
             tv_prev = tv;
 
-            if (_handleInput()) // true, if window should close
-                break;
+            //_w->setActive(true);
+        //    if (_handleInput()) // true, if window should close
+        //        break;
+
+            _handleInput();
 
             callback(data);
 
@@ -28,9 +31,17 @@ void Dengine::loop(void (*callback)(void* data), void* data)
 
             _draw();
 
+            //_w->setActive(false);
+
             if ( (i++ % 60) == 0)
             {
                 //printf("%s: Frame time: %f ms\n", __FUNCTION__, 1000.0*dt);
+            }
+
+            if (_window_closed) // This bool is e.g. set by _handleInput()
+            {
+                printf("Closing window\n");
+                _w->close();
             }
         }
         else
@@ -83,7 +94,8 @@ void Dengine::_draw()
 
 void Dengine::_glClear()
 {
-    glClearColor(0.2f, 0.4f, 0.8f, 1.0f);
+    //glClearColor(0.2f, 0.4f, 0.8f, 1.0f);
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
     //glColorMask (GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
     //glDepthMask (GL_TRUE);

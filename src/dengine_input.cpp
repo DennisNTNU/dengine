@@ -30,8 +30,9 @@ bool Dengine::_handleSFMLEvents()
         {
         // Window Events
         case sf::Event::Closed:
-            _w->close();
-            return 1;
+            _window_closed = true;
+            printf("Window should close\n");
+            return true;
             break;
         case sf::Event::Resized:
         {
@@ -70,7 +71,11 @@ bool Dengine::_handleSFMLEvents()
         // Keyboard Events
         case sf::Event::KeyPressed:
             if (e.key.code == sf::Keyboard::Key::Escape)
+            {
+                _window_closed = true;
+                printf("Escape pressed\n");
                 return true;
+            }
             im.registerKeyPressSFML(e.key.code);
             //printf("Key Press Event: %i\n", e.key.code);
             // Arrow keys: left 71 right 72 up 73 down 74

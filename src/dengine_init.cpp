@@ -20,6 +20,7 @@ Dengine::Dengine()
     , _hasWindowFocus(true)
     , _width(1280)
     , _height(720)
+    , _window_closed(false)
     , _shaderIDbbox(0)
     , dt(0.016666)
     , targetFrameTime(0.016666) // 60fps -> 16.66ms
