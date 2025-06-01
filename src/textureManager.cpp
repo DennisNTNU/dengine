@@ -61,7 +61,7 @@ void TextureManager::addTexture(int textureManagerTextureID, unsigned int width,
     checkGLError(__FILE__, __LINE__);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     checkGLError(__FILE__, __LINE__);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); // GL_LINEAR_MIPMAP_LINEAR
     checkGLError(__FILE__, __LINE__);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     checkGLError(__FILE__, __LINE__);

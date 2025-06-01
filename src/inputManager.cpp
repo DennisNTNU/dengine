@@ -136,7 +136,7 @@ int InputManager::isKeyDown(unsigned char asciiKey)
     {
         return _keyDownArraySFML[asciiKey - 48 + 26];
     }
-    return -1;
+    return 0;
 }
 
 void InputManager::registerMouseJustEntered(void)
