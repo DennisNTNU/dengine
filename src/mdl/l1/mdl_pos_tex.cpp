@@ -106,3 +106,9 @@ void Mdl_pos_tex::draw(float* view, float* persp, void* otherdata)
     glUseProgram(0);
     checkGLError(__FILE__, __LINE__);
 }
+
+void Mdl_pos_tex::changeTexture(GLuint textureID)
+{
+    _textureID = textureID;
+}
+

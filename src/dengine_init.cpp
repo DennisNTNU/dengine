@@ -61,7 +61,7 @@ int Dengine::_initWindow()
     sf::ContextSettings settings;
     settings.depthBits = 16;
     settings.stencilBits = 0;
-    settings.antialiasingLevel = 2;
+    settings.antialiasingLevel = 0;
     settings.majorVersion = 3;
     settings.minorVersion = 3;
     settings.attributeFlags = sf::ContextSettings::Attribute::Core;
@@ -263,6 +263,14 @@ void Dengine::setPositionModel(int index, float x, float y, float z)
     }
 }
 
+void Dengine::changeTextureModel(int index, int tmTextureID)
+{
+    if (index > 0 && index < _models.size())
+    {
+        _models[index]->changeTexture(tm.getGLTextureID(tmTextureID));
+    }
+}
+
 void Dengine::registerBboxShader(int smShaderID)
 {
     _shaderIDbbox = sm.getProgramID(smShaderID);
@@ -276,6 +284,7 @@ void Dengine::removeLastModel()
 
 void Dengine::removeModelByIndex(int index)
 {
+    delete _models[index];
     _models.erase(_models.begin()+index);
 }
 

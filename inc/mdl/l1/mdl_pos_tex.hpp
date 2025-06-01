@@ -13,6 +13,7 @@ public:
     ~Mdl_pos_tex();
 
     void draw(float* view, float* persp, void* otherdata);
+    void changeTexture(GLuint textureID);
 protected:
     void _initVAO(float* vertexPositions, float* vertexUVs, int vertexCount, unsigned int* indices);
     //virtual void initData(unsigned int** indices, float** vertexPositions, float** vertexUVs, int* vertexCount) = 0;

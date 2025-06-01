@@ -40,6 +40,7 @@ public:
     void translateLastAddedModel(float x, float y, float z);
     void translateModel(int index, float x, float y, float z);
     void setPositionModel(int index, float x, float y, float z);
+    void changeTextureModel(int index, int tmTextureID);
 
     void removeLastModel();
     void removeModelByIndex(int index);
