@@ -59,7 +59,7 @@ public:
     virtual void draw(float* view, float* persp, void* otherdata) = 0;
     void draw_bbox(GLuint shaderIDbbox, float* view, float* persp);
 
-    virtual void changeTexture(GLuint textureID) {}
+    virtual void changeTexture(GLuint) {};
 protected:
     int _id;
     char _name[128];
